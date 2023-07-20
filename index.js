@@ -4,7 +4,7 @@ const port = 3000;
 const sqlite3 = require("sqlite3").verbose();
 
 //items in the global namespace are accessible throught out the node application
-global.db = new sqlite3.Database("./database.db", function(err) {
+global.db = new sqlite3.Database("./database.db", function (err) {
   if (err) {
     console.error(err);
     process.exit(1); //Bail out we can't connect to the DB
@@ -21,9 +21,13 @@ global.db = new sqlite3.Database("./database.db", function(err) {
 app.set("view engine", "ejs");
 
 app.get("/", (req, res) => {
-  // db.all("SELECT * FROM testUsers", (err, rows) =>{
-  // res.json(rows)})
-  res.render("index");
+  db.all(
+    "SELECT title, subtitle, username FROM blogs JOIN users ON author=user_id",
+    (err, rows) => {
+      const blogs = rows;
+      res.render("index", { thing: "llama", blogs });
+    },
+  );
 });
 
 app.get("/api/users", (req, res) => {
