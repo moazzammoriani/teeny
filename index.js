@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const port = 3000;
 const sqlite3 = require("sqlite3").verbose();
+app.use(express.json());
 
 //items in the global namespace are accessible throught out the node application
 global.db = new sqlite3.Database("./database.db", function (err) {
@@ -51,6 +52,27 @@ app.get("/author/home", (req, res) => {
 
 app.get("/author/create", (req, res) => {
   res.render("create", {});
+});
+
+app.post("/api/blogs", (req, res) => {
+  const { title, subtitle, author } = req.body;
+
+  const blog = {
+    title,
+    subtitle,
+    author,
+    state: "draft",
+  };
+
+  db.all(
+    `INSERT INTO blogs ('title', 'subtitle', 'author', 'state') VALUES ('${title}', '${subtitle}', ${author}, 'draft');`,
+    (err) => {
+      if (err) {
+        console.log(err);
+      }
+      res.status(201).json(blog);
+    },
+  );
 });
 
 app.get("/api/users", (req, res) => {
