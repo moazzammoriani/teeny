@@ -30,6 +30,10 @@ app.get("/", (req, res) => {
   );
 });
 
+app.get("/author/create", (req, res) => {
+  res.render("create", {});
+});
+
 app.get("/api/users", (req, res) => {
   db.all("SELECT * FROM users", (err, rows) => {
     res.json(rows);
