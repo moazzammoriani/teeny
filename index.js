@@ -22,12 +22,31 @@ app.set("view engine", "ejs");
 
 app.get("/", (req, res) => {
   db.all(
-    "SELECT title, subtitle, username FROM blogs JOIN users ON author=user_id",
+    "SELECT title, subtitle, username FROM blogs JOIN users ON author=user_id WHERE blogs.state='published';",
     (err, rows) => {
-      const blogs = rows;
-      res.render("index", { thing: "llama", blogs });
+      try {
+        const blogs = rows;
+        res.render("index", { thing: "llama", blogs });
+      } catch (err) {
+        console.error(err);
+      }
     },
   );
+});
+
+app.get("/author/home", (req, res) => {
+  db.all("SELECT title, subtitle, state FROM blogs;", (err, rows) => {
+    console.error(err);
+
+    try {
+      const published = rows.filter((blog) => blog.state === "published");
+      const drafts = rows.filter((blog) => blog.state === "draft");
+      res.render("dashboard", { published, drafts });
+    } catch (err) {
+      console.error(err);
+      res.status(400).end();
+    }
+  });
 });
 
 app.get("/author/create", (req, res) => {

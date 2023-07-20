@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS blogs (
     title TEXT NOT NULL,
     subtitle TEXT NOT NULL,
     author INT,
+    state TEXT,
     FOREIGN KEY (author) REFERENCES users(user_id)
 );
 
@@ -43,9 +44,9 @@ CREATE TABLE IF NOT EXISTS blogs (
 INSERT INTO users ('username', 'name') VALUES ('mwzm', 'Moazzam Moriani');
 INSERT INTO users ('username', 'name') VALUES ('yeeking', 'Mathew Yee-king');
 
-INSERT INTO blogs ('title', 'subtitle', 'author') VALUES ('I like coding in functional languages', 'a true story', 1);
-INSERT INTO blogs ('title', 'subtitle', 'author') VALUES ('I like coding in C', 'oof', 1);
-INSERT INTO blogs ('title', 'subtitle', 'author') VALUES ('I like coding pasta', 'fax', 1);
+INSERT INTO blogs ('title', 'subtitle', 'author', 'state') VALUES ('I like coding in functional languages', 'a true story', 1, 'draft');
+INSERT INTO blogs ('title', 'subtitle', 'author', 'state') VALUES ('I like coding in C', 'oof', 1, 'published');
+INSERT INTO blogs ('title', 'subtitle', 'author', 'state') VALUES ('I like coding pasta', 'fax', 1, 'published');
 
 COMMIT;
 
