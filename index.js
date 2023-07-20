@@ -39,7 +39,6 @@ app.get("/", (req, res) => {
 
 app.get("/author/home", (req, res) => {
   db.all("SELECT title, subtitle, state FROM blogs;", (err, rows) => {
-    console.error(err);
 
     try {
       const published = rows.filter((blog) => blog.state === "published");

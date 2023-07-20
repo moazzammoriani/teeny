@@ -1,53 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
+
 <body>
 
   <div>
     <h1>Drafts</h1>
-  <% if (drafts.length> 0) { %>
-    <% drafts.forEach(function(blog) { %>
-      <div>
-        <h4>
-          <%= blog.title %>
-        </h4>
-        <h4>
-          <%= blog.subtitle %>
-        </h4>
+    <% if (drafts.length> 0) { %>
+      <% drafts.forEach(function(blog) { %>
         <div>
-          <button>edit</button>
-          <button>publish</button>
-          <button>delete</button>
+          <h4>
+            <%= blog.title %>
+          </h4>
+          <h4>
+            <%= blog.subtitle %>
+          </h4>
+          <div>
+            <button>edit</button>
+            <button>publish</button>
+            <button>delete</button>
+          </div>
         </div>
-      </div>
-      <% }); %>
-        <% } %>
+        <% }); %>
+          <% } %>
   </div>
 
   <div>
     <h1>Published</h1>
-  <% if (published.length> 0) { %>
-    <% published.forEach(function(blog) { %>
-      <div>
-        <h4>
-          <%= blog.title %>
-        </h4>
-        <h4>
-          <%= blog.subtitle %>
-        </h4>
+    <% if (published.length> 0) { %>
+      <% published.forEach(function(blog) { %>
         <div>
-          <button>share</button>
-          <button>delete</button>
+          <h4>
+            <%= blog.title %>
+          </h4>
+          <h4>
+            <%= blog.subtitle %>
+          </h4>
+          <div>
+            <button>share</button>
+            <button>delete</button>
+          </div>
         </div>
-      </div>
-      <% }); %>
-        <% } %>
+        <% }); %>
+          <% } %>
   </div>
-  
-  <button>create new draft</button>
+
+  <a href="/author/create">
+    <button>create new draft</button>
+  </a>
 </body>
+
 </html>
