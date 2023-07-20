@@ -21,6 +21,8 @@ global.db = new sqlite3.Database("./database.db", function (err) {
 // //set the app to use ejs for rendering
 app.set("view engine", "ejs");
 
+app.use("/public", express.static("public"));
+
 app.get("/", (req, res) => {
   db.all(
     "SELECT title, subtitle, username FROM blogs JOIN users ON author=user_id WHERE blogs.state='published';",
