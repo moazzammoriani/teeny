@@ -55,7 +55,13 @@ app.get("/author/home", (req, res) => {
           }
           const published = rows.filter((blog) => blog.state === "published");
           const drafts = rows.filter((blog) => blog.state === "draft");
-          res.render("dashboard", { published, drafts, name, blog_title ,blog_subtitle });
+          res.render("dashboard", {
+            published,
+            drafts,
+            name,
+            blog_title,
+            blog_subtitle,
+          });
         },
       );
     },
@@ -94,6 +100,20 @@ app.get("/author/edit/:id", (req, res) => {
         creation_date,
         last_edit_date,
       });
+    },
+  );
+});
+
+app.get("/author/settings", (req, res) => {
+  db.all(
+    "SELECT id, name, blog_title, blog_subtitle FROM users WHERE users.id=1",
+    (err, rows) => {
+      if (err) {
+        console.log(err);
+        return res.status(400).end();
+      }
+      const { id, name, blog_title, blog_subtitle } = rows[0];
+      res.render("settings", { id, name, blog_title, blog_subtitle });
     },
   );
 });
@@ -138,7 +158,8 @@ app.post("/api/blogs", (req, res) => {
   );
 });
 
-app.put("/api/blogs", (req, res) => {
+app.put("/api/blogs/:id", (req, res) => {
+  const id = req.params.id;
   const body = req.body;
 
   const querySubstr = Object.keys(body)
@@ -146,13 +167,13 @@ app.put("/api/blogs", (req, res) => {
     .join(", ");
 
   db.all(
-    `UPDATE blogs SET ${querySubstr} WHERE blogs.id=${body.id};`,
+    `UPDATE blogs SET ${querySubstr} WHERE blogs.id=${id};`,
     (err, rows) => {
       if (err) {
         console.log(err);
       }
       db.all(
-        `SELECT id, title, subtitle, state FROM blogs WHERE blogs.id=${body.id};`,
+        `SELECT id, title, subtitle, state FROM blogs WHERE blogs.id=${id};`,
         (err, rows) => {
           if (err) {
             console.log(err);
@@ -179,6 +200,36 @@ app.get("/api/users", (req, res) => {
   db.all("SELECT * FROM users", (err, rows) => {
     res.json(rows);
   });
+});
+
+app.put("/api/users/:id", (req, res) => {
+  const id = req.params.id;
+
+  const body = req.body;
+
+  const querySubstr = Object.keys(body)
+    .map((k) => k + `='${body[k]}'`)
+    .join(", ");
+
+  db.all(
+    `UPDATE users SET ${querySubstr} WHERE users.id=${id}`,
+    (err, rows) => {
+      if (err) {
+        console.log(err);
+        return res.status(400).end();
+      }
+      db.all(
+        `SELECT blog_title, blog_subtitle, name FROM users WHERE users.id=${id}`,
+        (err, rows) => {
+          if (err) {
+            console.log(err);
+            return res.status(400).end();
+          }
+          res.json(rows[0])
+        },
+      );
+    },
+  );
 });
 
 //this adds all the userRoutes to the app under the path /user
