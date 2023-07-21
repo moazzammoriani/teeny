@@ -20,6 +20,12 @@
           <h4>
             <%= blog.subtitle %>
           </h4>
+          <h5>
+            Created: <%= blog.creation_date%>
+          </h5>
+          <h5>
+            Last Edit: <%= blog.last_edit_date%>
+          </h5>
           <div>
             <button class="edit-btn" onclick="onClick(event, <%=blog.id%>)">edit</button>
             <button class="publish-btn" onclick="onClick(event, <%=blog.id%>)">publish</button>
@@ -41,6 +47,9 @@
           <h4>
             <%= blog.subtitle %>
           </h4>
+          <h5>
+            Published: <%= blog.publish_date%>
+          </h5>
           <div>
             <button class="share-btn" onclick="onClick(event, <%=blog.id%>)">share</button>
             <button class="delete-btn" onclick="onClick(event, <%=blog.id%>)">delete</button>

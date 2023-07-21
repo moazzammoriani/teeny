@@ -37,7 +37,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/author/home", (req, res) => {
-  db.all("SELECT id, title, subtitle, state FROM blogs;", (err, rows) => {
+  db.all("SELECT id, title, subtitle, state, publish_date, creation_date, last_edit_date FROM blogs;", (err, rows) => {
     if (err) {
       console.log(err);
       res.status(400).end();
@@ -53,30 +53,36 @@ app.get("/author/create", (req, res) => {
 });
 
 app.get("/api/blogs", (req, res) => {
-  db.all("SELECT id, title, subtitle, content, author, state FROM blogs;", (err, rows) => {
-    if (err) {
-      console.log(err);
-      res.status(400).end();
-    }
-    res.json(rows);
-  });
+  db.all(
+    "SELECT id, title, subtitle, content, author, state FROM blogs;",
+    (err, rows) => {
+      if (err) {
+        console.log(err);
+        res.status(400).end();
+      }
+      res.json(rows);
+    },
+  );
 });
 
 app.post("/api/blogs", (req, res) => {
   // TODO: Replace single quotes with escape characters inserting them in a db query
   // to prevent errors.
-  const { title, subtitle, content, author } = req.body;
+  const { title, subtitle, content, author, creation_date, last_edit_date } =
+    req.body;
 
   const blog = {
     title,
     subtitle,
     content,
     author,
+    creation_date,
+    last_edit_date,
     state: "draft",
   };
 
   db.all(
-    `INSERT INTO blogs ('title', 'subtitle', 'author', 'state', 'content') VALUES ('${title}', '${subtitle}', ${author}, 'draft', '${content}');`,
+    `INSERT INTO blogs ('title', 'subtitle', 'author', 'state', 'content', 'creation_date', 'last_edit_date') VALUES ('${title}', '${subtitle}', ${author}, 'draft', '${content}', '${creation_date}', '${last_edit_date}');`,
     (err) => {
       if (err) {
         console.log(err);
@@ -106,7 +112,6 @@ app.put("/api/blogs", (req, res) => {
       );
     },
   );
-
 });
 
 app.delete("/api/blogs/:id", (req, res) => {
@@ -118,7 +123,6 @@ app.delete("/api/blogs/:id", (req, res) => {
     }
     res.status(204).end();
   });
-  
 });
 
 app.get("/api/users", (req, res) => {

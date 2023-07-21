@@ -48,9 +48,9 @@ CREATE TABLE IF NOT EXISTS blogs (
 INSERT INTO users ('username', 'name') VALUES ('mwzm', 'Moazzam Moriani');
 INSERT INTO users ('username', 'name') VALUES ('yeeking', 'Mathew Yee-king');
 
-INSERT OR IGNORE INTO blogs ('title', 'subtitle', 'author', 'state', 'content', 'publish_date') VALUES ('I like coding in functional languages', 'a true story', 1, 'published', 'Ever since I read SICP, I have seen great utility in programming functionally. Even programming in OCaml and Haskell has shown me that.', 'Sun, 05 May 2019 00:00:00 GMT');
-INSERT OR IGNORE INTO blogs ('title', 'subtitle', 'author', 'state', 'content', 'publish_date') VALUES ('I like coding in C', 'oof', 1, 'published', 'The good thing about C is that it gives you exactly what you asked for. If you can read a bit assembly then you can eventually use C to get assembly good that yu expect. This has value for low-level systems.', 'Sun, 05 May 2019 00:00:00 GMT');
-INSERT OR IGNORE INTO blogs ('title', 'subtitle', 'author', 'state', 'content', 'publish_date') VALUES ('I like coding pasta', 'fax', 1, 'published', 'What can I say. Sometimes I get hungry and I have to just grab a bowl of pasta.', 'Sun, 05 May 2019 00:00:00 GMT');
+INSERT OR IGNORE INTO blogs ('title', 'subtitle', 'author', 'state', 'content', 'creation_date', 'last_edit_date', 'publish_date') VALUES ('I like coding in functional languages', 'a true story', 1, 'published', 'Ever since I read SICP, I have seen great utility in programming functionally. Even programming in OCaml and Haskell has shown me that.', 'Sun, 05 May 2019 00:00:00 GMT', 'Sun, 05 May 2019 00:00:00 GMT','Fri, 21 Jul 2023 08:00:20 GMT');
+INSERT OR IGNORE INTO blogs ('title', 'subtitle', 'author', 'state', 'content', 'creation_date', 'last_edit_date', 'publish_date') VALUES ('I like coding in C', 'oof', 1, 'published', 'The good thing about C is that it gives you exactly what you asked for. If you can read a bit assembly then you can eventually use C to get assembly good that yu expect. This has value for low-level systems.', 'Sun, 05 May 2019 00:00:00 GMT', 'Sun, 05 May 2019 00:00:00 GMT','Fri, 21 Jul 2023 08:00:20 GMT');
+INSERT OR IGNORE INTO blogs ('title', 'subtitle', 'author', 'state', 'content', 'creation_date', 'last_edit_date', 'publish_date') VALUES ('I like coding pasta', 'fax', 1, 'published', 'What can I say. Sometimes I get hungry and I have to just grab a bowl of pasta.', 'Sun, 05 May 2019 00:00:00 GMT', 'Sun, 05 May 2019 00:00:00 GMT','Fri, 21 Jul 2023 08:00:20 GMT');
 
 COMMIT;
 
