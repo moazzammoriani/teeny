@@ -25,7 +25,7 @@ app.use("/public", express.static("public"));
 
 app.get("/", (req, res) => {
   db.all(
-    "SELECT title, subtitle, username FROM blogs JOIN users ON author=users.id WHERE blogs.state='published';",
+    "SELECT title, subtitle, username, publish_date FROM blogs JOIN users ON author=users.id WHERE blogs.state='published';",
     (err, rows) => {
       if (err) {
         console.log(err);
