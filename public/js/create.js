@@ -5,6 +5,8 @@ const onSubmit = (e) => {
 
   const title = e.target.querySelector("#title").value;
   const subtitle = e.target.querySelector("#subtitle").value;
+  const content = e.target.querySelector("#content").value;
+  const author = 1;
 
   (async () => {
     const rawResponse = await fetch("/api/blogs", {
@@ -13,9 +15,8 @@ const onSubmit = (e) => {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ title, subtitle, author: 1 }),
+      body: JSON.stringify({ title, subtitle, content, author }),
     });
-
   })();
 };
 

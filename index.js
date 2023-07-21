@@ -56,17 +56,18 @@ app.get("/author/create", (req, res) => {
 });
 
 app.post("/api/blogs", (req, res) => {
-  const { title, subtitle, author } = req.body;
+  const { title, subtitle, content, author,} = req.body;
 
   const blog = {
     title,
     subtitle,
+    content,
     author,
     state: "draft",
   };
 
   db.all(
-    `INSERT INTO blogs ('title', 'subtitle', 'author', 'state') VALUES ('${title}', '${subtitle}', ${author}, 'draft');`,
+    `INSERT INTO blogs ('title', 'subtitle', 'author', 'state', 'content') VALUES ('${title}', '${subtitle}', ${author}, 'draft', '${content}');`,
     (err) => {
       if (err) {
         console.log(err);

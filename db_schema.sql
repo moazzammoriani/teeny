@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS blogs (
     blog_id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
     subtitle TEXT NOT NULL,
+    content TEXT NOT NULL,
     author INT,
     state TEXT,
     FOREIGN KEY (author) REFERENCES users(user_id)
@@ -44,9 +45,9 @@ CREATE TABLE IF NOT EXISTS blogs (
 INSERT INTO users ('username', 'name') VALUES ('mwzm', 'Moazzam Moriani');
 INSERT INTO users ('username', 'name') VALUES ('yeeking', 'Mathew Yee-king');
 
-INSERT INTO blogs ('title', 'subtitle', 'author', 'state') VALUES ('I like coding in functional languages', 'a true story', 1, 'draft');
-INSERT INTO blogs ('title', 'subtitle', 'author', 'state') VALUES ('I like coding in C', 'oof', 1, 'published');
-INSERT INTO blogs ('title', 'subtitle', 'author', 'state') VALUES ('I like coding pasta', 'fax', 1, 'published');
+INSERT OR IGNORE INTO blogs ('title', 'subtitle', 'author', 'state', 'content') VALUES ('I like coding in functional languages', 'a true story', 1, 'published', 'Ever since I read SICP, I have seen great utility in programming functionally. Even programming in OCaml and Haskell has shown me that.');
+INSERT OR IGNORE INTO blogs ('title', 'subtitle', 'author', 'state', 'content') VALUES ('I like coding in C', 'oof', 1, 'published', 'The good thing about C is that it gives you exactly what you asked for. If you can read a bit assembly then you can eventually use C to get assembly good that you expect. This has value for low-level systems.');
+INSERT OR IGNORE INTO blogs ('title', 'subtitle', 'author', 'state', 'content') VALUES ('I like coding pasta', 'fax', 1, 'draft', 'What can I say. Sometimes I get hungry and I have to just grab a bowl of pasta.');
 
 COMMIT;
 
