@@ -1,6 +1,6 @@
 const form = document.getElementById("create-draft-form");
 
-const onSubmit = (e) => {
+const onSubmit = async (e) => {
   // Prevent the default form submission behavior
   e.preventDefault(); 
 
@@ -10,22 +10,20 @@ const onSubmit = (e) => {
   const content = e.target.querySelector("#content").value;
   const author = 1;
 
-  (async () => {
-    // Asynchronously send data to the `/api/blogs` end-point.
-    const rawResponse = await fetch("/api/blogs", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ title, subtitle, content, author }),
-    });
+  // Asynchronously send data to the `/api/blogs` end-point.
+  const rawResponse = await fetch("/api/blogs", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ title, subtitle, content, author }),
+  });
 
-    // If POST succeeds then redirect client to author home
-    if (rawResponse.ok) {
-      window.location.href = "/author/home"
-    }
-  })();
+  // If POST succeeds then redirect client to author home
+  if (rawResponse.ok) {
+    window.location.href = "/author/home"
+  }
 };
 
 form.addEventListener("submit", onSubmit);

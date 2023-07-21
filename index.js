@@ -53,6 +53,8 @@ app.get("/author/create", (req, res) => {
 });
 
 app.post("/api/blogs", (req, res) => {
+  // TODO: Replace single quotes with escape characters inserting them in a db query 
+  // to prevent errors.
   const { title, subtitle, content, author } = req.body;
 
   const blog = {

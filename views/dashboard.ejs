@@ -13,7 +13,7 @@
     <h1>Drafts</h1>
     <% if (drafts.length> 0) { %>
       <% drafts.forEach(function(blog) { %>
-        <div>
+        <div class="draft-author-blog">
           <h4>
             <%= blog.title %>
           </h4>
@@ -21,9 +21,9 @@
             <%= blog.subtitle %>
           </h4>
           <div>
-            <button>edit</button>
-            <button>publish</button>
-            <button>delete</button>
+            <button class="edit-btn" onclick="onClick(event, <%=blog.id%>)">edit</button>
+            <button class="publish-btn" onclick="onClick(event, <%=blog.id%>)">publish</button>
+            <button class="delete-btn" onclick="onClick(event, <%=blog.id%>)">delete</button>
           </div>
         </div>
         <% }); %>
@@ -53,6 +53,9 @@
   <a href="/author/create">
     <button>create new draft</button>
   </a>
+
+  <script src="/public/js/dashboard.js">
+  </script>
 </body>
 
 </html>
