@@ -1,14 +1,19 @@
 const blogs = document.querySelectorAll(".draft-author-blog");
 
 const publishBlog = async (blogId) => {
+  const id = blogId;
+  const state = "published";
+  const publish_date = new Date().toUTCString();
+
+
   // Asynchronously send data to the `/api/blogs` end-point.
-  const rawResponse = await fetch("/api/blogs", {
+  const rawResponse = await fetch(`/api/blogs/${id}`, {
     method: "PUT",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ id: blogId, state: "published" }),
+    body: JSON.stringify({ id, state, publish_date }),
   });
 
   // If POST succeeds then redirect client to author home
@@ -21,7 +26,7 @@ const publishBlog = async (blogId) => {
 
 const editBlog = (blogId) => {
   window.location.href = `/author/edit/${blogId}`;
-}
+};
 
 const deleteBlog = async (blogId) => {
   // Asynchronously send DELETE req to the `/api/blogs` end-point.

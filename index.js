@@ -3,6 +3,7 @@ const app = express();
 const port = 3000;
 const sqlite3 = require("sqlite3").verbose();
 app.use(express.json());
+const blogsRouter = require("./routes/blogs");
 
 //items in the global namespace are accessible throught out the node application
 global.db = new sqlite3.Database("./database.db", function(err) {
@@ -14,11 +15,7 @@ global.db = new sqlite3.Database("./database.db", function(err) {
     global.db.run("PRAGMA foreign_keys=ON"); //This tells SQLite to pay attention to foreign key constraints
   }
 });
-//
-//
-// const userRoutes = require('./routes/user');
-//
-// //set the app to use ejs for rendering
+
 app.set("view engine", "ejs");
 
 app.use("/public", express.static("public"));
@@ -118,83 +115,6 @@ app.get("/author/settings", (req, res) => {
   );
 });
 
-app.get("/api/blogs", (req, res) => {
-  db.all(
-    "SELECT id, title, subtitle, content, author, state FROM blogs;",
-    (err, rows) => {
-      if (err) {
-        console.log(err);
-        res.status(400).end();
-      }
-      res.json(rows);
-    },
-  );
-});
-
-app.post("/api/blogs", (req, res) => {
-  // TODO: Replace single quotes with escape characters inserting them in a db query
-  // to prevent errors.
-  const { title, subtitle, content, author, creation_date, last_edit_date } =
-    req.body;
-
-  const blog = {
-    title,
-    subtitle,
-    content,
-    author,
-    creation_date,
-    last_edit_date,
-    state: "draft",
-  };
-
-  db.all(
-    `INSERT INTO blogs ('title', 'subtitle', 'author', 'state', 'content', 'creation_date', 'last_edit_date') VALUES ('${title}', '${subtitle}', ${author}, 'draft', '${content}', '${creation_date}', '${last_edit_date}');`,
-    (err) => {
-      if (err) {
-        console.log(err);
-      }
-      res.status(201).json(blog);
-    },
-  );
-});
-
-app.put("/api/blogs/:id", (req, res) => {
-  const id = req.params.id;
-  const body = req.body;
-
-  const querySubstr = Object.keys(body)
-    .map((k) => k + `='${body[k]}'`)
-    .join(", ");
-
-  db.all(
-    `UPDATE blogs SET ${querySubstr} WHERE blogs.id=${id};`,
-    (err, rows) => {
-      if (err) {
-        console.log(err);
-      }
-      db.all(
-        `SELECT id, title, subtitle, state FROM blogs WHERE blogs.id=${id};`,
-        (err, rows) => {
-          if (err) {
-            console.log(err);
-          }
-          res.json(rows[0]);
-        },
-      );
-    },
-  );
-});
-
-app.delete("/api/blogs/:id", (req, res) => {
-  const id = req.params.id;
-
-  db.all(`DELETE FROM blogs WHERE blogs.id=${id}`, (err, rows) => {
-    if (err) {
-      console.log(err);
-    }
-    res.status(204).end();
-  });
-});
 
 app.get("/api/users", (req, res) => {
   db.all("SELECT * FROM users", (err, rows) => {
@@ -235,6 +155,7 @@ app.put("/api/users/:id", (req, res) => {
 //this adds all the userRoutes to the app under the path /user
 // app.use('/user', userRoutes);
 
+app.use("/api/blogs", blogsRouter);
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
