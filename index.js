@@ -5,7 +5,7 @@ const sqlite3 = require("sqlite3").verbose();
 app.use(express.json());
 
 //items in the global namespace are accessible throught out the node application
-global.db = new sqlite3.Database("./database.db", function (err) {
+global.db = new sqlite3.Database("./database.db", function(err) {
   if (err) {
     console.error(err);
     process.exit(1); //Bail out we can't connect to the DB
@@ -37,19 +37,54 @@ app.get("/", (req, res) => {
 });
 
 app.get("/author/home", (req, res) => {
-  db.all("SELECT id, title, subtitle, state, publish_date, creation_date, last_edit_date FROM blogs;", (err, rows) => {
-    if (err) {
-      console.log(err);
-      res.status(400).end();
-    }
-    const published = rows.filter((blog) => blog.state === "published");
-    const drafts = rows.filter((blog) => blog.state === "draft");
-    res.render("dashboard", { published, drafts });
-  });
+  db.all(
+    "SELECT id, title, subtitle, state, publish_date, creation_date, last_edit_date FROM blogs;",
+    (err, rows) => {
+      if (err) {
+        console.log(err);
+        res.status(400).end();
+      }
+      const published = rows.filter((blog) => blog.state === "published");
+      const drafts = rows.filter((blog) => blog.state === "draft");
+      res.render("dashboard", { published, drafts });
+    },
+  );
 });
 
 app.get("/author/create", (req, res) => {
   res.render("create", {});
+});
+
+app.get("/author/edit/:id", (req, res) => {
+  const id = req.params.id;
+  db.all(
+    `SELECT id, title, subtitle, content, state, creation_date, last_edit_date FROM blogs WHERE blogs.id=${id}`,
+    (err, rows) => {
+      if (err) {
+        console.log(err);
+      }
+
+      const {
+        id,
+        title,
+        subtitle,
+        content,
+        state,
+        creation_date,
+        last_edit_date,
+      } = rows[0];
+
+      res.render("edit", {
+        id,
+        title,
+        subtitle,
+        content,
+        state,
+        creation_date,
+        last_edit_date,
+      });
+    },
+  );
 });
 
 app.get("/api/blogs", (req, res) => {
@@ -93,16 +128,20 @@ app.post("/api/blogs", (req, res) => {
 });
 
 app.put("/api/blogs", (req, res) => {
-  const { id, state } = req.body;
+  const body = req.body;
+
+  const querySubstr = Object.keys(body)
+    .map((k) => k + `='${body[k]}'`)
+    .join(", ");
 
   db.all(
-    `UPDATE blogs SET state='${state}' WHERE blogs.id=${id};`,
+    `UPDATE blogs SET ${querySubstr} WHERE blogs.id=${body.id};`,
     (err, rows) => {
       if (err) {
         console.log(err);
       }
       db.all(
-        `SELECT id, title, subtitle, state FROM blogs WHERE blogs.id=${id};`,
+        `SELECT id, title, subtitle, state FROM blogs WHERE blogs.id=${body.id};`,
         (err, rows) => {
           if (err) {
             console.log(err);

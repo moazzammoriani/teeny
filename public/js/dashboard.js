@@ -19,6 +19,10 @@ const publishBlog = async (blogId) => {
   }
 };
 
+const editBlog = (blogId) => {
+  window.location.href = `/author/edit/${blogId}`;
+}
+
 const deleteBlog = async (blogId) => {
   // Asynchronously send DELETE req to the `/api/blogs` end-point.
   const rawResponse = await fetch(`/api/blogs/${blogId}`, {
@@ -40,6 +44,7 @@ const onClick = (event, blogId) => {
   console.log(className);
 
   if (className === "edit-btn") {
+    editBlog(blogId);
   } else if (className === "publish-btn") {
     publishBlog(blogId);
   } else if (className === "delete-btn") {
