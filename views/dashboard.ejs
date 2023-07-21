@@ -10,7 +10,13 @@
 <body>
 
   <div>
-    <h1>Drafts</h1>
+    <h1><%= blog_title %></h1>
+    <h2><%= blog_subtitle %></h2>
+    <p><%= name %></p>
+  </div>
+
+  <div>
+    <h3>Drafts</h3>
     <% if (drafts.length> 0) { %>
       <% drafts.forEach(function(blog) { %>
         <div class="draft-author-blog">
@@ -37,7 +43,7 @@
   </div>
 
   <div>
-    <h1>Published</h1>
+    <h3>Published</h3>
     <% if (published.length> 0) { %>
       <% published.forEach(function(blog) { %>
         <div>

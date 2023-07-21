@@ -38,15 +38,26 @@ app.get("/", (req, res) => {
 
 app.get("/author/home", (req, res) => {
   db.all(
-    "SELECT id, title, subtitle, state, publish_date, creation_date, last_edit_date FROM blogs;",
+    "SELECT name, blog_title, blog_subtitle FROM users WHERE users.id=1",
     (err, rows) => {
       if (err) {
         console.log(err);
-        res.status(400).end();
+        return res.status(400).end();
       }
-      const published = rows.filter((blog) => blog.state === "published");
-      const drafts = rows.filter((blog) => blog.state === "draft");
-      res.render("dashboard", { published, drafts });
+      const { name, blog_title, blog_subtitle } = rows[0];
+
+      db.all(
+        "SELECT id, title, subtitle, state, publish_date, creation_date, last_edit_date FROM blogs;",
+        (err, rows) => {
+          if (err) {
+            console.log(err);
+            return res.status(400).end();
+          }
+          const published = rows.filter((blog) => blog.state === "published");
+          const drafts = rows.filter((blog) => blog.state === "draft");
+          res.render("dashboard", { published, drafts, name, blog_title ,blog_subtitle });
+        },
+      );
     },
   );
 });

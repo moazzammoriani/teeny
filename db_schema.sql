@@ -27,7 +27,9 @@ INSERT INTO testUserRecords ('test_record_value', 'test_user_id') VALUES ('Lorem
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT NOT NULL,
-    name TEXT NOT NULL
+    name TEXT NOT NULL,
+    blog_title TEXT,
+    blog_subtitle TEXT
 );
 
 
@@ -45,7 +47,7 @@ CREATE TABLE IF NOT EXISTS blogs (
 );
 
 
-INSERT INTO users ('username', 'name') VALUES ('mwzm', 'Moazzam Moriani');
+INSERT INTO users ('username', 'name', 'blog_title', 'blog_subtitle') VALUES ('mwzm', 'Moazzam Moriani', 'Razzle Dazzle', 'A True Story');
 INSERT INTO users ('username', 'name') VALUES ('yeeking', 'Mathew Yee-king');
 
 INSERT OR IGNORE INTO blogs ('title', 'subtitle', 'author', 'state', 'content', 'creation_date', 'last_edit_date', 'publish_date') VALUES ('I like coding in functional languages', 'a true story', 1, 'published', 'Ever since I read SICP, I have seen great utility in programming functionally. Even programming in OCaml and Haskell has shown me that.', 'Sun, 05 May 2019 00:00:00 GMT', 'Sun, 05 May 2019 00:00:00 GMT','Fri, 21 Jul 2023 08:00:20 GMT');
