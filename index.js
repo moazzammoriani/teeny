@@ -52,6 +52,16 @@ app.get("/author/create", (req, res) => {
   res.render("create", {});
 });
 
+app.get("/api/blogs", (req, res) => {
+  db.all("SELECT id, title, subtitle, content, author, state FROM blogs;", (err, rows) => {
+    if (err) {
+      console.log(err);
+      res.status(400).end();
+    }
+    res.json(rows);
+  });
+});
+
 app.post("/api/blogs", (req, res) => {
   // TODO: Replace single quotes with escape characters inserting them in a db query
   // to prevent errors.
@@ -97,6 +107,18 @@ app.put("/api/blogs", (req, res) => {
     },
   );
 
+});
+
+app.delete("/api/blogs/:id", (req, res) => {
+  const id = req.params.id;
+
+  db.all(`DELETE FROM blogs WHERE blogs.id=${id}`, (err, rows) => {
+    if (err) {
+      console.log(err);
+    }
+    res.status(204).end();
+  });
+  
 });
 
 app.get("/api/users", (req, res) => {
