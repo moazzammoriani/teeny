@@ -4,6 +4,7 @@ const port = 3000;
 const sqlite3 = require("sqlite3").verbose();
 app.use(express.json());
 const blogsRouter = require("./routes/blogs");
+const usersRouter = require("./routes/users");
 
 //items in the global namespace are accessible throught out the node application
 global.db = new sqlite3.Database("./database.db", function(err) {
@@ -17,7 +18,6 @@ global.db = new sqlite3.Database("./database.db", function(err) {
 });
 
 app.set("view engine", "ejs");
-
 app.use("/public", express.static("public"));
 
 app.get("/", (req, res) => {
@@ -115,47 +115,8 @@ app.get("/author/settings", (req, res) => {
   );
 });
 
-
-app.get("/api/users", (req, res) => {
-  db.all("SELECT * FROM users", (err, rows) => {
-    res.json(rows);
-  });
-});
-
-app.put("/api/users/:id", (req, res) => {
-  const id = req.params.id;
-
-  const body = req.body;
-
-  const querySubstr = Object.keys(body)
-    .map((k) => k + `='${body[k]}'`)
-    .join(", ");
-
-  db.all(
-    `UPDATE users SET ${querySubstr} WHERE users.id=${id}`,
-    (err, rows) => {
-      if (err) {
-        console.log(err);
-        return res.status(400).end();
-      }
-      db.all(
-        `SELECT blog_title, blog_subtitle, name FROM users WHERE users.id=${id}`,
-        (err, rows) => {
-          if (err) {
-            console.log(err);
-            return res.status(400).end();
-          }
-          res.json(rows[0])
-        },
-      );
-    },
-  );
-});
-
-//this adds all the userRoutes to the app under the path /user
-// app.use('/user', userRoutes);
-
 app.use("/api/blogs", blogsRouter);
+app.use("/api/users", usersRouter)
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
