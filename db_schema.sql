@@ -25,20 +25,20 @@ INSERT INTO testUserRecords ('test_record_value', 'test_user_id') VALUES ('Lorem
 
 
 CREATE TABLE IF NOT EXISTS users (
-    user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT NOT NULL,
     name TEXT NOT NULL
 );
 
 
 CREATE TABLE IF NOT EXISTS blogs (
-    blog_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
     subtitle TEXT NOT NULL,
     content TEXT NOT NULL,
     author INT,
     state TEXT,
-    FOREIGN KEY (author) REFERENCES users(user_id)
+    FOREIGN KEY (author) REFERENCES users(id)
 );
 
 

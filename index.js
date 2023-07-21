@@ -25,29 +25,26 @@ app.use("/public", express.static("public"));
 
 app.get("/", (req, res) => {
   db.all(
-    "SELECT title, subtitle, username FROM blogs JOIN users ON author=user_id WHERE blogs.state='published';",
+    "SELECT title, subtitle, username FROM blogs JOIN users ON author=users.id WHERE blogs.state='published';",
     (err, rows) => {
-      try {
-        const blogs = rows;
-        res.render("index", { thing: "llama", blogs });
-      } catch (err) {
-        console.error(err);
+      if (err) {
+        console.log(err);
       }
+      const blogs = rows;
+      res.render("index", { blogs });
     },
   );
 });
 
 app.get("/author/home", (req, res) => {
-  db.all("SELECT title, subtitle, state FROM blogs;", (err, rows) => {
-
-    try {
-      const published = rows.filter((blog) => blog.state === "published");
-      const drafts = rows.filter((blog) => blog.state === "draft");
-      res.render("dashboard", { published, drafts });
-    } catch (err) {
-      console.error(err);
+  db.all("SELECT id, title, subtitle, state FROM blogs;", (err, rows) => {
+    if (err) {
+      console.log(err);
       res.status(400).end();
     }
+    const published = rows.filter((blog) => blog.state === "published");
+    const drafts = rows.filter((blog) => blog.state === "draft");
+    res.render("dashboard", { published, drafts });
   });
 });
 
@@ -56,7 +53,7 @@ app.get("/author/create", (req, res) => {
 });
 
 app.post("/api/blogs", (req, res) => {
-  const { title, subtitle, content, author,} = req.body;
+  const { title, subtitle, content, author } = req.body;
 
   const blog = {
     title,
