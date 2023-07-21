@@ -42,8 +42,8 @@
             <%= blog.subtitle %>
           </h4>
           <div>
-            <button>share</button>
-            <button>delete</button>
+            <button class="share-btn" onclick="onClick(event, <%=blog.id%>)">share</button>
+            <button class="delete-btn" onclick="onClick(event, <%=blog.id%>)">delete</button>
           </div>
         </div>
         <% }); %>

@@ -53,7 +53,7 @@ app.get("/author/create", (req, res) => {
 });
 
 app.post("/api/blogs", (req, res) => {
-  // TODO: Replace single quotes with escape characters inserting them in a db query 
+  // TODO: Replace single quotes with escape characters inserting them in a db query
   // to prevent errors.
   const { title, subtitle, content, author } = req.body;
 
@@ -74,6 +74,29 @@ app.post("/api/blogs", (req, res) => {
       res.status(201).json(blog);
     },
   );
+});
+
+app.put("/api/blogs", (req, res) => {
+  const { id, state } = req.body;
+
+  db.all(
+    `UPDATE blogs SET state='${state}' WHERE blogs.id=${id};`,
+    (err, rows) => {
+      if (err) {
+        console.log(err);
+      }
+      db.all(
+        `SELECT id, title, subtitle, state FROM blogs WHERE blogs.id=${id};`,
+        (err, rows) => {
+          if (err) {
+            console.log(err);
+          }
+          res.json(rows[0]);
+        },
+      );
+    },
+  );
+
 });
 
 app.get("/api/users", (req, res) => {
