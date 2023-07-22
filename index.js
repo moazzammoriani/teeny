@@ -5,9 +5,10 @@ const sqlite3 = require("sqlite3").verbose();
 app.use(express.json());
 const blogsRouter = require("./routes/blogs");
 const usersRouter = require("./routes/users");
+const commentsRouter = require("./routes/comments");
 
 //items in the global namespace are accessible throught out the node application
-global.db = new sqlite3.Database("./database.db", function(err) {
+global.db = new sqlite3.Database("./database.db", function (err) {
   if (err) {
     console.error(err);
     process.exit(1); //Bail out we can't connect to the DB
@@ -147,21 +148,33 @@ app.get("/reader/article/:id", (req, res) => {
             return res.status(400).end();
           }
           const { title, subtitle, content } = rows[0];
-          res.render("article", {
-            id,
-            title,
-            subtitle,
-            content,
-            name,
-            blog_title,
-            blog_subtitle,
-          });
+          db.all(
+            `SELECT * FROM comments WHERE comments.parent_blog=${id}`,
+            (err, rows) => {
+              if (err) {
+                console.log(err);
+              }
+              const comments = rows;
+
+              res.render("article", {
+                id,
+                title,
+                subtitle,
+                content,
+                name,
+                blog_title,
+                blog_subtitle,
+                comments,
+              });
+            },
+          );
         },
       );
     },
   );
 });
 
+app.use("/api/comments", commentsRouter);
 app.use("/api/blogs", blogsRouter);
 app.use("/api/users", usersRouter);
 app.listen(port, () => {

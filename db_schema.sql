@@ -47,6 +47,17 @@ CREATE TABLE IF NOT EXISTS blogs (
 );
 
 
+CREATE TABLE IF NOT EXISTS comments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    content TEXT NOT NULL,
+    posted_date TEXT,
+    author INT,
+    parent_blog INT,
+    FOREIGN KEY (author) REFERENCES users(id),
+    FOREIGN KEY (parent_blog) REFERENCES blogs(id)
+);
+
+
 INSERT INTO users ('username', 'name', 'blog_title', 'blog_subtitle') VALUES ('mwzm', 'Moazzam Moriani', 'Razzle Dazzle', 'A True Story');
 INSERT INTO users ('username', 'name') VALUES ('yeeking', 'Mathew Yee-king');
 

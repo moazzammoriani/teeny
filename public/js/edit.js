@@ -1,7 +1,6 @@
 const onSubmit = async (e, blogId) => {
   // Prevent the default form submission behavior
   e.preventDefault();
-  console.log(e.target);
 
   // Extract and setup data from form
   const title = e.target.querySelector("#title").value;

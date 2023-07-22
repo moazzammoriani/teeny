@@ -47,6 +47,19 @@
       </form>
 
       <div id="comments-container">
+
+        <% if (comments.length> 0) { %>
+          <% comments.forEach(function(comment) { %>
+            <div class="comment" %>">
+              <p class="comment-text">
+                <%= comment.content%>
+              </p>
+              <p class="comment-date">
+                <%= comment.posted_date %>
+              </p>
+            </div>
+            <% }); %>
+              <% } %>
       </div>
 
       <script src="/public/js/article.js">
