@@ -1,0 +1,19 @@
+.blog {
+  background: #e0dfde;
+  padding: 10px;
+  margin: 20px 0;
+}
+
+.blog-title {
+  font-size: 22px;
+}
+
+.published {
+  font-size: 10px;
+}
+
+.blog:hover {
+  cursor: pointer;
+  background-color: #c98a4b; 
+  color: white;
+}

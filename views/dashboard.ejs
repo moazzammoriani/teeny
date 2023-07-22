@@ -5,73 +5,72 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link rel="stylesheet" href="/public/styles/all.css">
 </head>
 
 <body>
+  <main>
 
-  <div>
-    <h1><%= blog_title %></h1>
-    <h2><%= blog_subtitle %></h2>
-    <p><%= name %></p>
+    <%- include("./partials/blog-heading.ejs") %>
+
     <a href="/author/settings">settings</a>
-  </div>
-
-  <div>
-    <h3>Drafts</h3>
-    <% if (drafts.length> 0) { %>
-      <% drafts.forEach(function(blog) { %>
-        <div class="draft-author-blog">
-          <h4>
-            <%= blog.title %>
-          </h4>
-          <h4>
-            <%= blog.subtitle %>
-          </h4>
-          <h5>
-            Created: <%= blog.creation_date%>
-          </h5>
-          <h5>
-            Last Edit: <%= blog.last_edit_date%>
-          </h5>
-          <div>
-            <button class="edit-btn" onclick="onClick(event, <%=blog.id%>)">edit</button>
-            <button class="publish-btn" onclick="onClick(event, <%=blog.id%>)">publish</button>
-            <button class="delete-btn" onclick="onClick(event, <%=blog.id%>)">delete</button>
+    <div>
+      <h3>Drafts</h3>
+      <% if (drafts.length> 0) { %>
+        <% drafts.forEach(function(blog) { %>
+          <div class="draft-author-blog">
+            <h4>
+              <%= blog.title %>
+            </h4>
+            <h4>
+              <%= blog.subtitle %>
+            </h4>
+            <h5>
+              Created: <%= blog.creation_date%>
+            </h5>
+            <h5>
+              Last Edit: <%= blog.last_edit_date%>
+            </h5>
+            <div>
+              <button class="edit-btn" onclick="onClick(event, <%=blog.id%>)">edit</button>
+              <button class="publish-btn" onclick="onClick(event, <%=blog.id%>)">publish</button>
+              <button class="delete-btn" onclick="onClick(event, <%=blog.id%>)">delete</button>
+            </div>
           </div>
-        </div>
-        <% }); %>
-          <% } %>
-  </div>
+          <% }); %>
+            <% } %>
+    </div>
 
-  <div>
-    <h3>Published</h3>
-    <% if (published.length> 0) { %>
-      <% published.forEach(function(blog) { %>
-        <div>
-          <h4>
-            <%= blog.title %>
-          </h4>
-          <h4>
-            <%= blog.subtitle %>
-          </h4>
-          <h5>
-            Published: <%= blog.publish_date%>
-          </h5>
+    <div>
+      <h3>Published</h3>
+      <% if (published.length> 0) { %>
+        <% published.forEach(function(blog) { %>
           <div>
-            <button class="share-btn" onclick="onClick(event, <%=blog.id%>)">share</button>
-            <button class="delete-btn" onclick="onClick(event, <%=blog.id%>)">delete</button>
+            <h4>
+              <%= blog.title %>
+            </h4>
+            <h4>
+              <%= blog.subtitle %>
+            </h4>
+            <h5>
+              Published: <%= blog.publish_date%>
+            </h5>
+            <div>
+              <button class="share-btn" onclick="onClick(event, <%=blog.id%>)">share</button>
+              <button class="delete-btn" onclick="onClick(event, <%=blog.id%>)">delete</button>
+            </div>
           </div>
-        </div>
-        <% }); %>
-          <% } %>
-  </div>
+          <% }); %>
+            <% } %>
+    </div>
 
-  <a href="/author/create">
-    <button>create new draft</button>
-  </a>
+    <a href="/author/create">
+      <button>create new draft</button>
+    </a>
 
-  <script src="/public/js/dashboard.js">
-  </script>
+    <script src="/public/js/dashboard.js">
+    </script>
+  </main>
 </body>
 
 </html>

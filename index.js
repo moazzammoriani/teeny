@@ -22,13 +22,25 @@ app.use("/public", express.static("public"));
 
 app.get("/", (req, res) => {
   db.all(
-    "SELECT title, subtitle, username, publish_date FROM blogs JOIN users ON author=users.id WHERE blogs.state='published';",
+    "SELECT blog_title, blog_subtitle, name FROM users WHERE users.id=1;",
     (err, rows) => {
       if (err) {
         console.log(err);
+        return res.status(400).end();
       }
-      const blogs = rows;
-      res.render("index", { blogs });
+      const { blog_title, blog_subtitle, name } = rows[0];
+
+      db.all(
+        "SELECT blogs.id, title, subtitle, username, publish_date FROM blogs JOIN users ON author=users.id WHERE blogs.state='published';",
+        (err, rows) => {
+          if (err) {
+            console.log(err);
+            return res.status(400).end();
+          }
+          const blogs = rows;
+          res.render("index", { blogs, blog_title, blog_subtitle, name });
+        },
+      );
     },
   );
 });
@@ -116,7 +128,7 @@ app.get("/author/settings", (req, res) => {
 });
 
 app.use("/api/blogs", blogsRouter);
-app.use("/api/users", usersRouter)
+app.use("/api/users", usersRouter);
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
