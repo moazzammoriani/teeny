@@ -6,6 +6,7 @@ app.use(express.json());
 const blogsRouter = require("./routes/blogs");
 const usersRouter = require("./routes/users");
 const commentsRouter = require("./routes/comments");
+const readerRouter = require("./routes/reader");
 
 //items in the global namespace are accessible throught out the node application
 global.db = new sqlite3.Database("./database.db", function (err) {
@@ -22,28 +23,7 @@ app.set("view engine", "ejs");
 app.use("/public", express.static("public"));
 
 app.get("/", (req, res) => {
-  db.all(
-    "SELECT blog_title, blog_subtitle, name FROM users WHERE users.id=1;",
-    (err, rows) => {
-      if (err) {
-        console.log(err);
-        return res.status(400).end();
-      }
-      const { blog_title, blog_subtitle, name } = rows[0];
-
-      db.all(
-        "SELECT blogs.id, title, subtitle, username, publish_date FROM blogs JOIN users ON author=users.id WHERE blogs.state='published';",
-        (err, rows) => {
-          if (err) {
-            console.log(err);
-            return res.status(400).end();
-          }
-          const blogs = rows;
-          res.render("index", { blogs, blog_title, blog_subtitle, name });
-        },
-      );
-    },
-  );
+  res.redirect("/reader/home");
 });
 
 app.get("/author/home", (req, res) => {
@@ -128,52 +108,8 @@ app.get("/author/settings", (req, res) => {
   );
 });
 
-app.get("/reader/article/:id", (req, res) => {
-  const id = req.params.id;
 
-  db.all(
-    "SELECT id, name, blog_title, blog_subtitle FROM users WHERE users.id=1",
-    (err, rows) => {
-      if (err) {
-        console.log(err);
-        return res.status(400).end();
-      }
-      const { name, blog_title, blog_subtitle } = rows[0];
-
-      db.all(
-        `SELECT id, title, subtitle, content, state, publish_date, creation_date, last_edit_date FROM blogs WHERE blogs.id=${id};`,
-        (err, rows) => {
-          if (err) {
-            console.log(err);
-            return res.status(400).end();
-          }
-          const { title, subtitle, content } = rows[0];
-          db.all(
-            `SELECT * FROM comments WHERE comments.parent_blog=${id}`,
-            (err, rows) => {
-              if (err) {
-                console.log(err);
-              }
-              const comments = rows;
-
-              res.render("article", {
-                id,
-                title,
-                subtitle,
-                content,
-                name,
-                blog_title,
-                blog_subtitle,
-                comments,
-              });
-            },
-          );
-        },
-      );
-    },
-  );
-});
-
+app.use("/reader", readerRouter);
 app.use("/api/comments", commentsRouter);
 app.use("/api/blogs", blogsRouter);
 app.use("/api/users", usersRouter);
