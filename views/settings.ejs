@@ -4,10 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/public/styles/all.css">
   <title>Document</title>
 </head>
 
 <body>
+  <main>
   <form action="" method="" onsubmit="onSubmit(event, <%= id %>)">
     <label for="blog_title">title:</label>
     <input type="text" id="blog_title" name="blog_title" value="<%= blog_title %>" required><br>
@@ -23,6 +25,7 @@
 
   <script src="/public/js/settings.js">
   </script>
+  </main>
 </body>
 
 </html>

@@ -4,27 +4,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/public/styles/all.css">
+  <link rel="stylesheet" href="/public/styles/create.css">
   <title>Document</title>
 </head>
 
 <body>
-  <form id="create-draft-form" action="" method="">
-    <label for="title">Title:</label>
-    <input type="text" id="title" name="title" required><br>
+  <main>
+    <form id="create-draft-form" action="" method="">
+      <ul>
+        <li>
+          <label for="title">Title:</label>
+          <input type="text" id="title" name="title" required><br>
+        </li>
 
-    <label for="subtitle">Subtitle:</label>
-    <input type="text" id="subtitle" name="subtitle" required><br>
+        <li>
+          <label for="subtitle">Subtitle:</label>
+          <input type="text" id="subtitle" name="subtitle" required><br>
+        </li>
+
+        <li>
+          <label for="content">Content:</label>
+          <textarea id="content" name="content" required></textarea><br><br>
+        </li>
+
+        <button type="submit">Create Blog Post</button>
+        <ul>
+    </form>
 
 
-    <label for="content">Content:</label>
-    <textarea id="content" name="content" rows="5" col="42" required>
-    </textarea><br>
-
-    <button type="submit">Create Blog Post</button>
-  </form>
-
-  <script src="/public/js/create.js">
-  </script>
+    <script src="/public/js/create.js">
+    </script>
+  </main>
 </body>
 
 </html>
