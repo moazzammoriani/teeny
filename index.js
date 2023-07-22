@@ -127,6 +127,40 @@ app.get("/author/settings", (req, res) => {
   );
 });
 
+app.get("/reader/article/:id", (req, res) => {
+  const id = req.params.id;
+
+  db.all(
+    "SELECT name, blog_title, blog_subtitle FROM users WHERE users.id=1",
+    (err, rows) => {
+      if (err) {
+        console.log(err);
+        return res.status(400).end();
+      }
+      const { name, blog_title, blog_subtitle } = rows[0];
+
+      db.all(
+        `SELECT id, title, subtitle, content, state, publish_date, creation_date, last_edit_date FROM blogs WHERE blogs.id=${id};`,
+        (err, rows) => {
+          if (err) {
+            console.log(err);
+            return res.status(400).end();
+          }
+          const { title, subtitle, content } = rows[0];
+          res.render("article", {
+            title,
+            subtitle,
+            content,
+            name,
+            blog_title,
+            blog_subtitle,
+          });
+        },
+      );
+    },
+  );
+});
+
 app.use("/api/blogs", blogsRouter);
 app.use("/api/users", usersRouter);
 app.listen(port, () => {

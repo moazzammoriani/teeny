@@ -2,6 +2,7 @@
   background: #e0dfde;
   padding: 10px;
   margin: 20px 0;
+  color: black;
 }
 
 .blog-title {
@@ -17,3 +18,8 @@
   background-color: #c98a4b; 
   color: white;
 }
+
+a {
+    text-decoration: none;
+}
+
