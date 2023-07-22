@@ -4,6 +4,11 @@
 
 }
 
+:root {
+  --grey: #e0dfde; 
+  --timestamp-font-size: 10px;
+}
+
 * {
     -webkit-box-sizing: border-box;
        -moz-box-sizing: border-box;
@@ -27,12 +32,9 @@ main {
 
 .blog-header-subtitle {
   font-size: 20px;
-
+}
 
 .blog-header-name {
   color: darkslategray;
 }
 
-textarea {
-  width: 100%;
-}

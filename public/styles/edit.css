@@ -1,4 +1,4 @@
 .info {
-  background-color: #e0dfde;
+  background-color: var(--grey);
   width: 600px;
 }

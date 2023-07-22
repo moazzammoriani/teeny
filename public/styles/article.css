@@ -27,11 +27,15 @@ textarea {
 .comment,
 #comment-adder {
   padding: 50px 20px;
-  background-color: #e0dfde;
+  background-color: var(--grey);
 }
 
 .comment {
   padding: 10px 20px;
   margin-top: 10px;
+}
+
+.comment-date {
+  font-size: var(--timestamp-font-size);
 }
 
