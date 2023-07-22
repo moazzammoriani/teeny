@@ -12,30 +12,32 @@
 
 <body>
   <main>
-  <form action="" method="" onsubmit="onSubmit(event, <%= id %>)">
-    <ul>
-      <li>
-    <label for="blog_title">title:</label>
-    <input type="text" id="blog-title" name="blog_title" value="<%= blog_title %>" required><br>
-      </li>
+    <form action="" method="" onsubmit="onSubmit(event, <%= id %>)">
+      <ul>
+        <li>
+          <label for="blog_title">title:</label>
+          <input type="text" id="blog-title" name="blog_title" value="<%= blog_title %>" required><br>
+        </li>
 
-      <li>
-    <label for="blog_subtitle">subtitle:</label>
-    <input type="text" id="blog-subtitle" name="blog_subtitle" value="<%= blog_subtitle %>"required><br>
-      </li>
+        <li>
+          <label for="blog_subtitle">subtitle:</label>
+          <input type="text" id="blog-subtitle" name="blog_subtitle" value="<%= blog_subtitle %>" required><br>
+        </li>
 
-      <li>
-    <label for="name">author:</label>
-    <input type="text" id="name" name="name" value="<%= name %>"required><br>
-      </li>
+        <li>
+          <label for="name">author:</label>
+          <input type="text" id="name" name="name" value="<%= name %>" required><br>
+        </li>
 
 
-    <button type="submit">Update</button>
-    </ul>
-  </form>
+        <li class="btn-container">
+          <button type="submit">Update</button>
+        </li>
+      </ul>
+    </form>
 
-  <script src="/public/js/settings.js">
-  </script>
+    <script src="/public/js/settings.js">
+    </script>
   </main>
 </body>
 

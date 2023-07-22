@@ -28,6 +28,11 @@ const editBlog = (blogId) => {
   window.location.href = `/author/edit/${blogId}`;
 };
 
+const shareLink = (blogId) => {
+  const baseUrl =window.location.href.replace('author\/home', ''); 
+  alert(`${baseUrl}reader/article/${blogId}`);
+}
+
 const deleteBlog = async (blogId) => {
   // Asynchronously send DELETE req to the `/api/blogs` end-point.
   const rawResponse = await fetch(`/api/blogs/${blogId}`, {
@@ -46,7 +51,6 @@ const onClick = (event, blogId) => {
   event.preventDefault();
 
   className = event.target.className;
-  console.log(className);
 
   if (className === "edit-btn") {
     editBlog(blogId);
@@ -54,5 +58,7 @@ const onClick = (event, blogId) => {
     publishBlog(blogId);
   } else if (className === "delete-btn") {
     deleteBlog(blogId);
+  } else if (className === "share-btn") {
+    shareLink(blogId);
   }
 };

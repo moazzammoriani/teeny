@@ -17,6 +17,7 @@
       <a href="/author/home">
         dashboard
       </a>
+      <hr><br>
 
       <div class="heading">
         Articles
@@ -24,7 +25,7 @@
 
       <% if (blogs.length> 0) { %>
         <% blogs.forEach(function(blog) { %>
-          <a  href="/reader/article/<%= blog.id %>">
+          <a href="/reader/article/<%= blog.id %>">
             <div class="blog blog-link" href="/reader/articles/<%= blog.id %>">
               <div class="blog-title">
                 <%= blog.title %>
@@ -33,7 +34,7 @@
                 <%= blog.subtitle %>
               </div>
               <p class="published">
-                published: <%= blog.publish_date %>
+                Published: <%= blog.publish_date %>
               </p>
             </div>
           </a>

@@ -15,8 +15,7 @@
     <%- include("./partials/blog-heading.ejs") %>
 
       <a href="/author/settings">settings</a>
-      <br><br>
-      <hr>
+      <hr><br>
       <section>
         <div class="heading">Drafts</div>
         <% if (drafts.length> 0) { %>
@@ -48,7 +47,7 @@
                   </a>
       </section><br>
 
-      <hr>
+      <hr><br>
 
 
 
@@ -64,7 +63,7 @@
                 <%= blog.subtitle %>
               </div>
               <p class="published">
-                published: <%= blog.publish_date %>
+                Published: <%= blog.publish_date %>
               </p>
               <div>
                 <button class="share-btn" onclick="onClick(event, <%=blog.id%>)">share</button>
