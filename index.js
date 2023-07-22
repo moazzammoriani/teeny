@@ -7,6 +7,7 @@ const blogsRouter = require("./routes/blogs");
 const usersRouter = require("./routes/users");
 const commentsRouter = require("./routes/comments");
 const readerRouter = require("./routes/reader");
+const authorRouter = require("./routes/author");
 
 //items in the global namespace are accessible throught out the node application
 global.db = new sqlite3.Database("./database.db", function (err) {
@@ -26,93 +27,12 @@ app.get("/", (req, res) => {
   res.redirect("/reader/home");
 });
 
-app.get("/author/home", (req, res) => {
-  db.all(
-    "SELECT name, blog_title, blog_subtitle FROM users WHERE users.id=1",
-    (err, rows) => {
-      if (err) {
-        console.log(err);
-        return res.status(400).end();
-      }
-      const { name, blog_title, blog_subtitle } = rows[0];
-
-      db.all(
-        "SELECT id, title, subtitle, state, publish_date, creation_date, last_edit_date FROM blogs;",
-        (err, rows) => {
-          if (err) {
-            console.log(err);
-            return res.status(400).end();
-          }
-          const published = rows.filter((blog) => blog.state === "published");
-          const drafts = rows.filter((blog) => blog.state === "draft");
-          res.render("dashboard", {
-            published,
-            drafts,
-            name,
-            blog_title,
-            blog_subtitle,
-          });
-        },
-      );
-    },
-  );
-});
-
-app.get("/author/create", (req, res) => {
-  res.render("create", {});
-});
-
-app.get("/author/edit/:id", (req, res) => {
-  const id = req.params.id;
-  db.all(
-    `SELECT id, title, subtitle, content, state, creation_date, last_edit_date FROM blogs WHERE blogs.id=${id}`,
-    (err, rows) => {
-      if (err) {
-        console.log(err);
-      }
-
-      const {
-        id,
-        title,
-        subtitle,
-        content,
-        state,
-        creation_date,
-        last_edit_date,
-      } = rows[0];
-
-      res.render("edit", {
-        id,
-        title,
-        subtitle,
-        content,
-        state,
-        creation_date,
-        last_edit_date,
-      });
-    },
-  );
-});
-
-app.get("/author/settings", (req, res) => {
-  db.all(
-    "SELECT id, name, blog_title, blog_subtitle FROM users WHERE users.id=1",
-    (err, rows) => {
-      if (err) {
-        console.log(err);
-        return res.status(400).end();
-      }
-      const { id, name, blog_title, blog_subtitle } = rows[0];
-      res.render("settings", { id, name, blog_title, blog_subtitle });
-    },
-  );
-});
-
-
+app.use("/author", authorRouter);
 app.use("/reader", readerRouter);
 app.use("/api/comments", commentsRouter);
 app.use("/api/blogs", blogsRouter);
 app.use("/api/users", usersRouter);
+
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
