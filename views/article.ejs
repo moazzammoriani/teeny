@@ -37,7 +37,20 @@
         <div></div>
       </div>
 
+      <hr>
 
+      <form id="comment-adder" action="" onsubmit="onSubmit(event, <%= id %>)">
+        <label for="content">Comment:</label>
+        <textarea id="comment-text" name="content" required></textarea><br><br>
+
+        <button type="submit">add comment</button>
+      </form>
+
+      <div id="comments-container">
+      </div>
+
+      <script src="/public/js/article.js">
+      </script>
   </main </body>
 
 </html>

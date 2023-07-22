@@ -9,4 +9,29 @@
 .article-content {
   font-size: 14px;
   margin-top: 50px;
+  margin-bottom: 50px;
 }
+
+form ul {
+  list-style: none;
+  width: 600px;
+}
+
+textarea {
+  vertical-align: top;
+  width: 450px;
+  height: 10em;
+  resize: none;
+}
+
+.comment,
+#comment-adder {
+  padding: 50px 20px;
+  background-color: #e0dfde;
+}
+
+.comment {
+  padding: 10px 20px;
+  margin-top: 10px;
+}
+

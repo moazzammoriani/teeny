@@ -131,7 +131,7 @@ app.get("/reader/article/:id", (req, res) => {
   const id = req.params.id;
 
   db.all(
-    "SELECT name, blog_title, blog_subtitle FROM users WHERE users.id=1",
+    "SELECT id, name, blog_title, blog_subtitle FROM users WHERE users.id=1",
     (err, rows) => {
       if (err) {
         console.log(err);
@@ -148,6 +148,7 @@ app.get("/reader/article/:id", (req, res) => {
           }
           const { title, subtitle, content } = rows[0];
           res.render("article", {
+            id,
             title,
             subtitle,
             content,
