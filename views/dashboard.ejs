@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet" href="/public/styles/all.css">
+  <link rel="stylesheet" href="/public/styles/index.css">
 </head>
 
 <body>
@@ -13,63 +14,70 @@
 
     <%- include("./partials/blog-heading.ejs") %>
 
-    <a href="/author/settings">settings</a>
-    <div>
-      <h3>Drafts</h3>
-      <% if (drafts.length> 0) { %>
-        <% drafts.forEach(function(blog) { %>
-          <div class="draft-author-blog">
-            <h4>
-              <%= blog.title %>
-            </h4>
-            <h4>
-              <%= blog.subtitle %>
-            </h4>
-            <h5>
-              Created: <%= blog.creation_date%>
-            </h5>
-            <h5>
-              Last Edit: <%= blog.last_edit_date%>
-            </h5>
-            <div>
-              <button class="edit-btn" onclick="onClick(event, <%=blog.id%>)">edit</button>
-              <button class="publish-btn" onclick="onClick(event, <%=blog.id%>)">publish</button>
-              <button class="delete-btn" onclick="onClick(event, <%=blog.id%>)">delete</button>
+      <a href="/author/settings">settings</a>
+      <br><br>
+      <hr>
+      <section>
+        <div class="heading">Drafts</div>
+        <% if (drafts.length> 0) { %>
+          <% drafts.forEach(function(blog) { %>
+            <div class="draft-author-blog">
+              <div class="blog">
+                <div class="blog-title">
+                  <%= blog.title %>
+                </div>
+                <div class="blog-subtitle">
+                  <%= blog.subtitle %>
+                </div>
+                <p class="published">
+                  Created: <%= blog.creation_date%>
+                </p>
+                <p class="published">
+                  Last Edit: <%= blog.last_edit_date%>
+                </p>
+                <div>
+                  <button class="edit-btn" onclick="onClick(event, <%=blog.id%>)">edit</button>
+                  <button class="publish-btn" onclick="onClick(event, <%=blog.id%>)">publish</button>
+                  <button class="delete-btn" onclick="onClick(event, <%=blog.id%>)">delete</button>
+                </div>
+              </div>
+              <% }); %>
+                <% } %>
+      </section><br>
+
+      <hr>
+
+
+
+      <section>
+        <div class="heading">Published</div>
+        <% if (published.length> 0) { %>
+          <% published.forEach(function(blog) { %>
+            <div class="blog">
+              <div class="blog-title">
+                <%= blog.title %>
+              </div>
+              <div class="blog-subtitle">
+                <%= blog.subtitle %>
+              </div>
+              <p class="published">
+                published: <%= blog.publish_date %>
+              </p>
+              <div>
+                <button class="share-btn" onclick="onClick(event, <%=blog.id%>)">share</button>
+                <button class="delete-btn" onclick="onClick(event, <%=blog.id%>)">delete</button>
+              </div>
             </div>
-          </div>
-          <% }); %>
-            <% } %>
-    </div>
+            <% }); %>
+              <% } %>
+      </section>
 
-    <div>
-      <h3>Published</h3>
-      <% if (published.length> 0) { %>
-        <% published.forEach(function(blog) { %>
-          <div>
-            <h4>
-              <%= blog.title %>
-            </h4>
-            <h4>
-              <%= blog.subtitle %>
-            </h4>
-            <h5>
-              Published: <%= blog.publish_date%>
-            </h5>
-            <div>
-              <button class="share-btn" onclick="onClick(event, <%=blog.id%>)">share</button>
-              <button class="delete-btn" onclick="onClick(event, <%=blog.id%>)">delete</button>
-            </div>
-          </div>
-          <% }); %>
-            <% } %>
-    </div>
+      <a href="/author/create">
+        <button>create new draft</button>
+      </a>
 
-    <a href="/author/create">
-      <button>create new draft</button>
-    </a>
-
-    <script src="/public/js/dashboard.js">
-    </script>
+      <script src="/public/js/dashboard.js">
+      </script>
   </main>
 </body>
 

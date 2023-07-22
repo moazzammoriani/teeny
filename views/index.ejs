@@ -18,14 +18,14 @@
         dashboard
       </a>
 
-      <h1>
+      <div class="heading">
         Articles
-      </h1>
+      </div>
 
       <% if (blogs.length> 0) { %>
         <% blogs.forEach(function(blog) { %>
           <a  href="/reader/article/<%= blog.id %>">
-            <div class="blog" href="/reader/articles/<%= blog.id %>">
+            <div class="blog blog-link" href="/reader/articles/<%= blog.id %>">
               <div class="blog-title">
                 <%= blog.title %>
               </div>

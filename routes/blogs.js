@@ -34,6 +34,7 @@ blogsRouter.post("/", (req, res) => {
     (err) => {
       if (err) {
         console.log(err);
+        return res.status(400).end();
       }
       res.status(201).json(blog);
     },
@@ -48,17 +49,21 @@ blogsRouter.put("/:id", (req, res) => {
     .map((k) => k + `='${body[k]}'`)
     .join(", ");
 
+  // Update db with new data
   global.db.all(
     `UPDATE blogs SET ${querySubstr} WHERE blogs.id=${id};`,
     (err, rows) => {
       if (err) {
         console.log(err);
+        return res.status(400).end();
       }
+      // Fetch updated record to return a response to client
       global.db.all(
         `SELECT id, title, subtitle, state FROM blogs WHERE blogs.id=${id};`,
         (err, rows) => {
           if (err) {
             console.log(err);
+            return res.status(400).end();
           }
           res.json(rows[0]);
         },
@@ -70,11 +75,21 @@ blogsRouter.put("/:id", (req, res) => {
 blogsRouter.delete("/:id", (req, res) => {
   const id = req.params.id;
 
-  global.db.all(`DELETE FROM blogs WHERE blogs.id=${id}`, (err, rows) => {
+  // Delete all comments related to the blog being deleted
+  global.db.all(`DELETE FROM comments WHERE parent_blog=${id}`, (err, rows) => {
     if (err) {
       console.log(err);
+      return res.status(400).end();
     }
-    res.status(204).end();
+
+    // Delete the blog itself
+    global.db.all(`DELETE FROM blogs WHERE blogs.id=${id}`, (err, rows) => {
+      if (err) {
+        console.log(err);
+        return res.status(400).end();
+      }
+      res.status(204).end();
+    });
   });
 });
 
