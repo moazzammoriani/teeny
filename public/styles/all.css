@@ -38,3 +38,14 @@ main {
   color: darkslategray;
 }
 
+button { 
+  padding: 5px 18px;
+  border-radius: 0px;
+  border: none;
+  color: white;
+  background-color: #008CBA;
+}
+
+button:hover {
+  cursor: pointer;
+}
