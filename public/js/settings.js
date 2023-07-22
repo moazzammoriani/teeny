@@ -3,8 +3,8 @@ const onSubmit = async (e, userId) => {
   e.preventDefault();
 
   // Extract and setup data from form
-  const blog_title = e.target.querySelector("#blog_title").value;
-  const blog_subtitle = e.target.querySelector("#blog_subtitle").value;
+  const blog_title = e.target.querySelector("#blog-title").value;
+  const blog_subtitle = e.target.querySelector("#blog-subtitle").value;
   const name = e.target.querySelector("#name").value;
   const id = userId;
 
@@ -22,7 +22,10 @@ const onSubmit = async (e, userId) => {
     }),
   });
 
-  if (!(rawResponse.ok)) {
+  // If PUT request succeeds go back to homepage
+  if (rawResponse.ok) {
+    window.location.href = "/author/home";
+  } else {
     console.log("Encountered error");
-  } 
+  }
 };
