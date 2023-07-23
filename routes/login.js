@@ -20,8 +20,9 @@ loginRouter.post("/", (req, res) => {
 
       const user = rows[0];
 
-      const passwordCorrect = user === undefined
-          ? false
+      const passwordCorrect =
+        user === null
+          ? undefined
           : await bcrypt.compare(password, user.password_hash);
 
       if (!user || !passwordCorrect) {
@@ -36,7 +37,11 @@ loginRouter.post("/", (req, res) => {
       };
 
       try {
-        const token = jwt.sign(userForToken, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "30s"});
+        const token = jwt.sign(userForToken, process.env.ACCESS_TOKEN_SECRET, {
+          expiresIn: "1h",
+        });
+        res.clearCookie("token");
+        res.cookie("token", token, { httpOnly: true, Path: "/"});
         res
           .status(200)
           .send({ token, username: user.username, name: user.name });

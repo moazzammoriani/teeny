@@ -1,6 +1,14 @@
   <div class="blog-header">
+    <% if (blog_title) { %>
     <div class="blog-header-title"><strong><%= blog_title %></strong></div>
+    <% } else { %>
+    <p>No title. <a href="/author/settings"> Want to add one? </a> </p>
+    <% }   %>
+    <% if (blog_title) { %>
     <div class="blog-header-subtitle"><%= blog_subtitle %></div>
+    <% } else { %>
+    <p>No subtitle. <a href="/author/settings"> Want to add one? </a> </p>
+    <% }   %>
     <p class="blog-header-name"><%= name %></p>
   </div>
 
