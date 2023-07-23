@@ -8,6 +8,7 @@ const usersRouter = require("./routes/users");
 const commentsRouter = require("./routes/comments");
 const readerRouter = require("./routes/reader");
 const authorRouter = require("./routes/author");
+const loginRouter = require("./routes/login");
 
 //items in the global namespace are accessible throught out the node application
 global.db = new sqlite3.Database("./database.db", function (err) {
@@ -27,6 +28,7 @@ app.get("/", (req, res) => {
   res.redirect("/reader/home");
 });
 
+app.use("/api/login", loginRouter);
 app.use("/author", authorRouter);
 app.use("/reader", readerRouter);
 app.use("/api/comments", commentsRouter);
