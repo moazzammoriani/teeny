@@ -29,7 +29,8 @@ CREATE TABLE IF NOT EXISTS users (
     username TEXT NOT NULL,
     name TEXT NOT NULL,
     blog_title TEXT,
-    blog_subtitle TEXT
+    blog_subtitle TEXT,
+    password_hash TEXT
 );
 
 
