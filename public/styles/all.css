@@ -49,3 +49,7 @@ button {
 button:hover {
   cursor: pointer;
 }
+
+button:focus {
+  border: black 1px;
+}
