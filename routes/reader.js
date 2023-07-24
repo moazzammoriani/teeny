@@ -3,9 +3,10 @@ const { authenticateSession } = require("../utils/middelware");
 
 readerRouter.get("/article/:id", authenticateSession, (req, res) => {
   const id = req.params.id;
+  const user = req.user;
 
   global.db.all(
-    "SELECT id, name, blog_title, blog_subtitle FROM users WHERE users.id=1",
+    `SELECT id, name, blog_title, blog_subtitle FROM users WHERE users.id=${user.id}`,
     (err, rows) => {
       if (err) {
         console.log(err);
@@ -22,7 +23,7 @@ readerRouter.get("/article/:id", authenticateSession, (req, res) => {
           }
           const { title, subtitle, content } = rows[0];
           global.db.all(
-            `SELECT comments.id, comments.content, comments.posted_date, users.username, comments.parent_blog FROM comments JOIN users ON comments.author=users.id; WHERE comments.parent_blog=${id}`,
+            `SELECT comments.id, comments.content, comments.posted_date, users.username, comments.parent_blog FROM comments JOIN users ON comments.author=users.id WHERE comments.parent_blog=${id}`,
             (err, rows) => {
               if (err) {
                 console.log(err);
@@ -50,7 +51,6 @@ readerRouter.get("/article/:id", authenticateSession, (req, res) => {
 });
 
 readerRouter.get("/home", authenticateSession, (req, res) => {
-  const token = req.cookies.token;
   const user = req.user;
 
   global.db.all(

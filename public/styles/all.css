@@ -6,6 +6,7 @@
 
 :root {
   --grey: #e0dfde; 
+  --orange: #c98a4b;
   --timestamp-font-size: 10px;
 }
 
@@ -52,4 +53,8 @@ button:hover {
 
 button:focus {
   border: black 1px;
+}
+
+#logout {
+  background-color: var(--orange);
 }

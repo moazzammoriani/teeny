@@ -40,8 +40,7 @@ loginRouter.post("/", (req, res) => {
         const token = jwt.sign(userForToken, process.env.ACCESS_TOKEN_SECRET, {
           expiresIn: "1h",
         });
-        console.log(`issued token = ${token}`)
-        res.cookie("token", token, { httpOnly: true, Path: "/"});
+        res.cookie("token", token, { httpOnly: true, Path: "/", sameSite: "lax" });
         res
           .status(200)
           .send({ token, username: user.username, name: user.name });
@@ -50,6 +49,11 @@ loginRouter.post("/", (req, res) => {
       }
     },
   );
+});
+
+loginRouter.delete("/", (req, res) => {
+  res.clearCookie("token");
+  return res.status(204).end();
 });
 
 module.exports = loginRouter;

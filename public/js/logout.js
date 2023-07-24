@@ -1,5 +1,6 @@
 const logout = async (e) => {
   e.preventDefault();
+  console.log("yes");
 
   // Asynchronously send data to the `/api/blogs` end-point.
   const rawResponse = await fetch("/api/login", {
@@ -8,7 +9,8 @@ const logout = async (e) => {
 
   // If POST succeeds then redirect client to author home
   if (rawResponse.ok) {
-    window.location.href = "/login";
+    console.log("logged out")
+    location.href = "/login";
   } else {
     console.log("Couldn't logout");
   }

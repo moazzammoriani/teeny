@@ -1,6 +1,6 @@
 const createComment = (e, res) => {
   // Extract comment text
-  const { posted_date, content } = res;
+  const { posted_date, content, username } = res;
   const textBox = e.target.querySelector("#comment-text");
   const commentText = content;
 
@@ -16,14 +16,21 @@ const createComment = (e, res) => {
   commentedText.classList.add("comment-text");
   commentedText.innerText = commentText;
 
+
+  // Create a p element for the posted date
+  const commentor = document.createElement("p");
+  commentor.classList.add("comment-date");
+  commentor.innerText = `Username: ${username}`;
+
   // Create a p element for the posted date
   const commentDate = document.createElement("p");
   commentDate.classList.add("comment-date");
-  commentDate.innerText = `posted: ${posted_date}`;
+  commentDate.innerText = `Posted: ${posted_date}`;
 
   /* Nest the commented text and commented date elements in
    * the comment element */
   comment.appendChild(commentedText);
+  comment.appendChild(commentor);
   comment.appendChild(commentDate);
 
   // Nest the comment in the comments container div
