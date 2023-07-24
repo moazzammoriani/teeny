@@ -14,10 +14,12 @@ blogsRouter.get("/", (req, res) => {
 });
 
 blogsRouter.post("/", (req, res) => {
-  // TODO: Replace single quotes with escape characters inserting them in a global.db query
-  // to prevent errors.
-  const { title, subtitle, content, author, creation_date, last_edit_date } =
-    req.body;
+  const { author, creation_date, last_edit_date } = req.body;
+
+  // Escape `'` for SQL
+  const title = req.body.title.replaceAll("'", "''");
+  const subtitle = req.body.subtitle.replaceAll("'", "''");
+  const content = req.body.content.replaceAll("'", "''");
 
   const blog = {
     title,
@@ -43,6 +45,10 @@ blogsRouter.post("/", (req, res) => {
 
 blogsRouter.put("/:id", (req, res) => {
   const id = req.params.id;
+  // Escape `'` for SQL
+  req.body.content = req.body.content.replaceAll("'", "''");
+  req.body.title = req.body.content.replaceAll("'", "''");
+  req.body.subtitle = req.body.content.replaceAll("'", "''");
   const body = req.body;
 
   const querySubstr = Object.keys(body)
