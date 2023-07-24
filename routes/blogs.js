@@ -22,6 +22,7 @@ blogsRouter.post("/", authenticateSession, (req, res) => {
   const subtitle = req.body.subtitle.replaceAll("'", "''");
   const content = req.body.content.replaceAll("'", "''");
   const author = req.user.id;
+  const likes = 0;
 
   const blog = {
     title,
@@ -30,11 +31,12 @@ blogsRouter.post("/", authenticateSession, (req, res) => {
     author,
     creation_date,
     last_edit_date,
+    likes,
     state: "draft",
   };
 
   global.db.all(
-    `INSERT INTO blogs ('title', 'subtitle', 'author', 'state', 'content', 'creation_date', 'last_edit_date') VALUES ('${title}', '${subtitle}', ${author}, 'draft', '${content}', '${creation_date}', '${last_edit_date}');`,
+    `INSERT INTO blogs ('title', 'subtitle', 'author', 'state', 'content', 'creation_date', 'last_edit_date', 'likes') VALUES ('${title}', '${subtitle}', ${author}, 'draft', '${content}', '${creation_date}', '${last_edit_date}', '${likes}');`,
     (err) => {
       if (err) {
         console.log(err);
@@ -81,6 +83,28 @@ blogsRouter.put("/:id", authenticateSession, (req, res) => {
       );
     },
   );
+});
+
+blogsRouter.put("/likes/:id", (req, res) => {
+  const id = req.params.id;
+  global.db.all(`SELECT likes FROM blogs WHERE blogs.id=${id}`, (err, rows) => {
+    if (err) {
+      console.log(err);
+      return res.status(400).end();
+    }
+    const likes = rows[0].likes;
+
+    global.db.all(
+      `UPDATE blogs SET likes=${likes + 1} WHERE blogs.id=${id}`,
+      (err, rows) => {
+        if (err) {
+          console.log(err);
+          return res.status(400).end();
+        }
+        res.json({ likes: likes + 1 });
+      },
+    );
+  });
 });
 
 blogsRouter.delete("/:id", authenticateSession, (req, res) => {

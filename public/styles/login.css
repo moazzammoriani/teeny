@@ -18,6 +18,13 @@
   margin-left: 37px;
 }
 
+#error-div {
+  text-align: center;
+  background: pink;
+  color: red;
+  margin-top: 30px;
+}
+
 .remove {
   display: none;
 }

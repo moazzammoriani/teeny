@@ -73,3 +73,30 @@ const onSubmit = async (e, blogId) => {
     console.log("Encountered error");
   }
 };
+
+const updateLikes = async (e, blogsId) => {
+  e.preventDefault()
+  const likesSpan = document.querySelector("#likes")
+
+  // Asynchronously send data to the `/api/blogs/likes` end-point.
+  const rawResponse = await fetch(`/api/blogs/likes/${blogsId}`, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+    },
+  });
+
+
+  // If PUT succeeds then redirect client to author home
+  if (rawResponse.ok) {
+    const response = await rawResponse.json();
+    let textArray = likesSpan.innerText.split(" ")
+    textArray[1] = response.likes;
+    likesSpan.innerText = textArray.join(' ');
+  } else {
+    console.log("Encountered error");
+  }
+
+
+
+}

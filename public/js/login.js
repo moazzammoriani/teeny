@@ -23,7 +23,8 @@ const login = async (e) => {
   if (rawResponse.ok) {
     window.location.href = "/reader/home";
   } else {
-    console.log("Encountered error");
+    const errorDiv = document.querySelector("#error-div");
+    errorDiv.classList.toggle('remove');
   }
 };
 

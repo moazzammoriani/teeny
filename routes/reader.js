@@ -15,13 +15,14 @@ readerRouter.get("/article/:id", authenticateSession, (req, res) => {
       const { name, blog_title, blog_subtitle } = rows[0];
 
       global.db.all(
-        `SELECT id, title, subtitle, content, state, publish_date, creation_date, last_edit_date FROM blogs WHERE blogs.id=${id};`,
+        `SELECT id, likes, title, subtitle, content, state, publish_date, creation_date, last_edit_date FROM blogs WHERE blogs.id=${id};`,
         (err, rows) => {
           if (err) {
             console.log(err);
             return res.status(400).end();
           }
-          const { title, subtitle, content } = rows[0];
+          const { title, subtitle, content, likes } = rows[0];
+          console.log(rows);
           global.db.all(
             `SELECT comments.id, comments.content, comments.posted_date, users.username, comments.parent_blog FROM comments JOIN users ON comments.author=users.id WHERE comments.parent_blog=${id}`,
             (err, rows) => {
@@ -29,8 +30,6 @@ readerRouter.get("/article/:id", authenticateSession, (req, res) => {
                 console.log(err);
               }
               const comments = rows;
-
-              console.log(rows);
 
               res.render("article", {
                 id,
@@ -41,6 +40,7 @@ readerRouter.get("/article/:id", authenticateSession, (req, res) => {
                 blog_title,
                 blog_subtitle,
                 comments,
+                likes,
               });
             },
           );

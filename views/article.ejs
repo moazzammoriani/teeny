@@ -39,6 +39,11 @@
 
       <hr>
 
+      <div>
+        <button onclick="updateLikes(event, <%= id %>)"> Like </button>     <span id="likes"> Likes <%= likes %> </span>
+      </div>
+      <br>
+
       <form id="comment-adder" action="" onsubmit="onSubmit(event, <%= id %>)">
         <label for="content">Comment:</label>
         <textarea id="comment-text" name="content" required></textarea><br><br>
