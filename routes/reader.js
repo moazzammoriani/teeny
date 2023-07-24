@@ -1,7 +1,7 @@
 const readerRouter = require("express").Router();
-const jwt = require("jsonwebtoken");
+const { authenticateSession } = require("../utils/middelware");
 
-readerRouter.get("/article/:id", (req, res) => {
+readerRouter.get("/article/:id", authenticateSession, (req, res) => {
   const id = req.params.id;
 
   global.db.all(
@@ -22,12 +22,14 @@ readerRouter.get("/article/:id", (req, res) => {
           }
           const { title, subtitle, content } = rows[0];
           global.db.all(
-            `SELECT * FROM comments WHERE comments.parent_blog=${id}`,
+            `SELECT comments.id, comments.content, comments.posted_date, users.username, comments.parent_blog FROM comments JOIN users ON comments.author=users.id; WHERE comments.parent_blog=${id}`,
             (err, rows) => {
               if (err) {
                 console.log(err);
               }
               const comments = rows;
+
+              console.log(rows);
 
               res.render("article", {
                 id,
@@ -47,37 +49,32 @@ readerRouter.get("/article/:id", (req, res) => {
   );
 });
 
-readerRouter.get("/home", (req, res) => {
+readerRouter.get("/home", authenticateSession, (req, res) => {
   const token = req.cookies.token;
+  const user = req.user;
 
-  try {
-    const user = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+  global.db.all(
+    `SELECT blog_title, blog_subtitle, name FROM users WHERE users.id=${user.id};`,
+    (err, rows) => {
+      if (err) {
+        console.log(err);
+        return res.status(400).end();
+      }
+      const { blog_title, blog_subtitle, name } = rows[0];
 
-    global.db.all(
-      `SELECT blog_title, blog_subtitle, name FROM users WHERE users.id=${user.id};`,
-      (err, rows) => {
-        if (err) {
-          console.log(err);
-          return res.status(400).end();
-        }
-        const { blog_title, blog_subtitle, name } = rows[0];
-
-        global.db.all(
-          "SELECT blogs.id, title, subtitle, username, publish_date FROM blogs JOIN users ON author=users.id WHERE blogs.state='published';",
-          (err, rows) => {
-            if (err) {
-              console.log(err);
-              return res.status(400).end();
-            }
-            const blogs = rows;
-            res.render("index", { blogs, blog_title, blog_subtitle, name });
-          },
-        );
-      },
-    );
-  } catch (err) {
-    console.log("Couldn't authenticate token");
-  }
+      global.db.all(
+        "SELECT blogs.id, title, subtitle, username, publish_date FROM blogs JOIN users ON author=users.id WHERE blogs.state='published';",
+        (err, rows) => {
+          if (err) {
+            console.log(err);
+            return res.status(400).end();
+          }
+          const blogs = rows;
+          res.render("index", { blogs, blog_title, blog_subtitle, name });
+        },
+      );
+    },
+  );
 });
 
 module.exports = readerRouter;

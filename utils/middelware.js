@@ -13,7 +13,7 @@ const authenticateSession = (req, res, next) => {
   } catch (err) {
     console.log("Couldn't authenticate token");
     console.log("Redirecting to login page");
-    res.redirect("/login");
+    return res.redirect("/login");
   }
 };
 

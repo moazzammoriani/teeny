@@ -42,7 +42,6 @@ const onSubmit = async (e, blogId) => {
   // Extract and setup data from form
   const content = textBox.value;
   const posted_date = new Date().toUTCString();
-  const author = 1;
   const parent_blog = blogId;
 
   // Asynchronously send data to the `/api/blogs` end-point.
@@ -55,7 +54,6 @@ const onSubmit = async (e, blogId) => {
     body: JSON.stringify({
       content,
       posted_date,
-      author,
       parent_blog,
     }),
   });
