@@ -5,3 +5,19 @@
 #login-btn {
   margin-left: 94px;
 }
+
+#create-btn {
+  margin-left: 111px;
+}
+
+#signup-password {
+  margin-left: 5px;
+}
+
+#signup-name {
+  margin-left: 37px;
+}
+
+.remove {
+  display: none;
+}

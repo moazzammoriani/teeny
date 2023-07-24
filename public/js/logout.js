@@ -1,3 +1,5 @@
+const logoutButton = document.querySelector("#logout");
+
 const logout = async (e) => {
   e.preventDefault();
   console.log("yes");
@@ -15,3 +17,5 @@ const logout = async (e) => {
     console.log("Couldn't logout");
   }
 };
+
+logoutButton.addEventListener("click", logout);
