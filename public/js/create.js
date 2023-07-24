@@ -8,7 +8,6 @@ const onSubmit = async (e) => {
   const title = e.target.querySelector("#title").value;
   const subtitle = e.target.querySelector("#subtitle").value;
   const content = e.target.querySelector("#content").value;
-  const author = 1;
   const creation_date = new Date().toUTCString();
   const last_edit_date = creation_date;
 
@@ -23,7 +22,6 @@ const onSubmit = async (e) => {
       title,
       subtitle,
       content,
-      author,
       creation_date,
       last_edit_date,
     }),

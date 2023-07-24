@@ -1,4 +1,5 @@
 const blogsRouter = require("express").Router();
+const { authenticateSession } = require("../utils/middelware");
 
 blogsRouter.get("/", (req, res) => {
   global.db.all(
@@ -13,13 +14,14 @@ blogsRouter.get("/", (req, res) => {
   );
 });
 
-blogsRouter.post("/", (req, res) => {
-  const { author, creation_date, last_edit_date } = req.body;
+blogsRouter.post("/", authenticateSession, (req, res) => {
+  const { creation_date, last_edit_date } = req.body;
 
   // Escape `'` for SQL
   const title = req.body.title.replaceAll("'", "''");
   const subtitle = req.body.subtitle.replaceAll("'", "''");
   const content = req.body.content.replaceAll("'", "''");
+  const author = req.user.id;
 
   const blog = {
     title,
@@ -43,14 +45,17 @@ blogsRouter.post("/", (req, res) => {
   );
 });
 
-blogsRouter.put("/:id", (req, res) => {
+blogsRouter.put("/:id", authenticateSession, (req, res) => {
   const id = req.params.id;
-  // Escape `'` for SQL
-  req.body.content = req.body.content.replaceAll("'", "''");
-  req.body.title = req.body.content.replaceAll("'", "''");
-  req.body.subtitle = req.body.content.replaceAll("'", "''");
-  const body = req.body;
 
+  // Escape `'` for SQL
+  if (req.body.conent)
+    req.body.content = req.body.content.replaceAll("'", "''");
+  if (req.body.title) req.body.title = req.body.title.replaceAll("'", "''");
+  if (req.body.subtitle)
+    req.body.subtitle = req.body.subtitle.replaceAll("'", "''");
+
+  const body = req.body;
   const querySubstr = Object.keys(body)
     .map((k) => k + `='${body[k]}'`)
     .join(", ");
@@ -78,8 +83,9 @@ blogsRouter.put("/:id", (req, res) => {
   );
 });
 
-blogsRouter.delete("/:id", (req, res) => {
+blogsRouter.delete("/:id", authenticateSession, (req, res) => {
   const id = req.params.id;
+  const user = req.user;
 
   // Delete all comments related to the blog being deleted
   global.db.all(`DELETE FROM comments WHERE parent_blog=${id}`, (err, rows) => {

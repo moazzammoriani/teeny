@@ -1,8 +1,10 @@
+const { authenticateSession } = require("../utils/middelware");
 const authorRouter = require("express").Router();
 
-authorRouter.get("/home", (req, res) => {
+authorRouter.get("/home", authenticateSession, (req, res) => {
+  const user = req.user;
   global.db.all(
-    "SELECT name, blog_title, blog_subtitle FROM users WHERE users.id=1",
+    `SELECT name, blog_title, blog_subtitle FROM users WHERE users.id=${user.id}`,
     (err, rows) => {
       if (err) {
         console.log(err);
@@ -32,11 +34,11 @@ authorRouter.get("/home", (req, res) => {
   );
 });
 
-authorRouter.get("/create", (req, res) => {
+authorRouter.get("/create", authenticateSession, (req, res) => {
   res.render("create", {});
 });
 
-authorRouter.get("/edit/:id", (req, res) => {
+authorRouter.get("/edit/:id", authenticateSession, (req, res) => {
   const id = req.params.id;
   global.db.all(
     `SELECT id, title, subtitle, content, state, creation_date, last_edit_date FROM blogs WHERE blogs.id=${id}`,
@@ -68,9 +70,10 @@ authorRouter.get("/edit/:id", (req, res) => {
   );
 });
 
-authorRouter.get("/settings", (req, res) => {
+authorRouter.get("/settings", authenticateSession, (req, res) => {
+  const user = req.user;
   global.db.all(
-    "SELECT id, name, blog_title, blog_subtitle FROM users WHERE users.id=1",
+    `SELECT id, name, blog_title, blog_subtitle FROM users WHERE users.id=${user.id}`,
     (err, rows) => {
       if (err) {
         console.log(err);

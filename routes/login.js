@@ -40,7 +40,7 @@ loginRouter.post("/", (req, res) => {
         const token = jwt.sign(userForToken, process.env.ACCESS_TOKEN_SECRET, {
           expiresIn: "1h",
         });
-        res.clearCookie("token");
+        console.log(`issued token = ${token}`)
         res.cookie("token", token, { httpOnly: true, Path: "/"});
         res
           .status(200)
