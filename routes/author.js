@@ -13,7 +13,7 @@ authorRouter.get("/home", authenticateSession, (req, res) => {
       const { name, blog_title, blog_subtitle } = rows[0];
 
       global.db.all(
-        "SELECT id, title, subtitle, state, publish_date, creation_date, last_edit_date FROM blogs;",
+        `SELECT id, title, subtitle, state, publish_date, creation_date, last_edit_date FROM blogs WHERE author=${user.id}`,
         (err, rows) => {
           if (err) {
             console.log(err);
