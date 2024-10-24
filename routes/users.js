@@ -17,14 +17,16 @@ usersRouter.put("/:id", (req, res) => {
     .join(", ");
 
   global.db.all(
-    `UPDATE users SET ${querySubstr} WHERE users.id=${id}`,
+    "UPDATE users SET ${querySubstr} WHERE users.id=?",
+    [id],
     (err, rows) => {
       if (err) {
         console.log(err);
         return res.status(400).end();
       }
       global.db.all(
-        `SELECT blog_title, blog_subtitle, name FROM users WHERE users.id=${id}`,
+        "SELECT blog_title, blog_subtitle, name FROM users WHERE users.id=?",
+        [id],
         (err, rows) => {
           if (err) {
             console.log(err);
@@ -45,7 +47,8 @@ usersRouter.post("/", async (req, res) => {
   const password_hash = await bcrypt.hash(password, saltRounds);
 
   global.db.all(
-    `INSERT INTO users ('username', 'name', 'password_hash') VALUES ('${username}', '${name}', '${password_hash}');`,
+    `INSERT INTO users ('username', 'name', 'password_hash') VALUES (?, ?, ?);`,
+    [username, name, password_hash],
     (err, rows) => {
       if (err) {
         console.log(err);

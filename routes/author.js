@@ -4,7 +4,8 @@ const authorRouter = require("express").Router();
 authorRouter.get("/home", authenticateSession, (req, res) => {
   const user = req.user;
   global.db.all(
-    `SELECT name, blog_title, blog_subtitle FROM users WHERE users.id=${user.id}`,
+    "SELECT name, blog_title, blog_subtitle FROM users WHERE users.id=?",
+    [user.id],
     (err, rows) => {
       if (err) {
         console.log(err);
@@ -13,7 +14,8 @@ authorRouter.get("/home", authenticateSession, (req, res) => {
       const { name, blog_title, blog_subtitle } = rows[0];
 
       global.db.all(
-        `SELECT id, title, subtitle, state, publish_date, creation_date, last_edit_date FROM blogs WHERE author=${user.id}`,
+        "SELECT id, title, subtitle, state, publish_date, creation_date, last_edit_date FROM blogs WHERE author=?",
+        [user.id],
         (err, rows) => {
           if (err) {
             console.log(err);
@@ -41,7 +43,8 @@ authorRouter.get("/create", authenticateSession, (req, res) => {
 authorRouter.get("/edit/:id", authenticateSession, (req, res) => {
   const id = req.params.id;
   global.db.all(
-    `SELECT id, title, subtitle, content, state, creation_date, last_edit_date FROM blogs WHERE blogs.id=${id}`,
+    "SELECT id, title, subtitle, content, state, creation_date, last_edit_date FROM blogs WHERE blogs.id=?",
+    [id],
     (err, rows) => {
       if (err) {
         console.log(err);
@@ -73,7 +76,7 @@ authorRouter.get("/edit/:id", authenticateSession, (req, res) => {
 authorRouter.get("/settings", authenticateSession, (req, res) => {
   const user = req.user;
   global.db.all(
-    `SELECT id, name, blog_title, blog_subtitle FROM users WHERE users.id=${user.id}`,
+    "SELECT id, name, blog_title, blog_subtitle FROM users WHERE users.id=?",[user.id],
     (err, rows) => {
       if (err) {
         console.log(err);

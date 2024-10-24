@@ -11,7 +11,8 @@ loginRouter.post("/", (req, res) => {
   const { username, password } = req.body;
 
   global.db.all(
-    `SELECT * FROM users WHERE users.username='${username}'`,
+    "SELECT * FROM users WHERE users.username=?",
+    [username],
     async (err, rows) => {
       if (err) {
         console.log(err);
@@ -40,7 +41,11 @@ loginRouter.post("/", (req, res) => {
         const token = jwt.sign(userForToken, process.env.ACCESS_TOKEN_SECRET, {
           expiresIn: "1h",
         });
-        res.cookie("token", token, { httpOnly: true, Path: "/", sameSite: "lax" });
+        res.cookie("token", token, {
+          httpOnly: true,
+          Path: "/",
+          sameSite: "lax",
+        });
         res
           .status(200)
           .send({ token, username: user.username, name: user.name });

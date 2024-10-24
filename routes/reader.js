@@ -6,7 +6,8 @@ readerRouter.get("/article/:id", authenticateSession, (req, res) => {
   const user = req.user;
 
   global.db.all(
-    `SELECT id, name, blog_title, blog_subtitle FROM users WHERE users.id=${user.id}`,
+    "SELECT id, name, blog_title, blog_subtitle FROM users WHERE users.id=?;",
+    [user.id],
     (err, rows) => {
       if (err) {
         console.log(err);
@@ -15,7 +16,8 @@ readerRouter.get("/article/:id", authenticateSession, (req, res) => {
       const { name, blog_title, blog_subtitle } = rows[0];
 
       global.db.all(
-        `SELECT id, likes, title, subtitle, content, state, publish_date, creation_date, last_edit_date FROM blogs WHERE blogs.id=${id};`,
+        "SELECT id, likes, title, subtitle, content, state, publish_date, creation_date, last_edit_date FROM blogs WHERE blogs.id=?;",
+        [id],
         (err, rows) => {
           if (err) {
             console.log(err);
@@ -24,7 +26,8 @@ readerRouter.get("/article/:id", authenticateSession, (req, res) => {
           const { title, subtitle, content, likes } = rows[0];
           console.log(rows);
           global.db.all(
-            `SELECT comments.id, comments.content, comments.posted_date, users.username, comments.parent_blog FROM comments JOIN users ON comments.author=users.id WHERE comments.parent_blog=${id}`,
+            "SELECT comments.id, comments.content, comments.posted_date, users.username, comments.parent_blog FROM comments JOIN users ON comments.author=users.id WHERE comments.parent_blog=?",
+            [id],
             (err, rows) => {
               if (err) {
                 console.log(err);
@@ -54,7 +57,8 @@ readerRouter.get("/home", authenticateSession, (req, res) => {
   const user = req.user;
 
   global.db.all(
-    `SELECT blog_title, blog_subtitle, name FROM users WHERE users.id=${user.id};`,
+    "SELECT blog_title, blog_subtitle, name FROM users WHERE users.id=?;",
+    [user.id],
     (err, rows) => {
       if (err) {
         console.log(err);

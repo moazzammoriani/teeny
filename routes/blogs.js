@@ -36,7 +36,8 @@ blogsRouter.post("/", authenticateSession, (req, res) => {
   };
 
   global.db.all(
-    `INSERT INTO blogs ('title', 'subtitle', 'author', 'state', 'content', 'creation_date', 'last_edit_date', 'likes') VALUES ('${title}', '${subtitle}', ${author}, 'draft', '${content}', '${creation_date}', '${last_edit_date}', '${likes}');`,
+    `INSERT INTO blogs ('title', 'subtitle', 'author', 'state', 'content', 'creation_date', 'last_edit_date', 'likes') VALUES (?, ?, ?, 'draft', ?, ?, ?, ?);`,
+    [title, subtitle, author, content, creation_date, last_edit_date, likes],
     (err) => {
       if (err) {
         console.log(err);
@@ -64,7 +65,8 @@ blogsRouter.put("/:id", authenticateSession, (req, res) => {
 
   // Update db with new data
   global.db.all(
-    `UPDATE blogs SET ${querySubstr} WHERE blogs.id=${id};`,
+    "UPDATE blogs SET ? WHERE blogs.id=?;",
+    [querySubstr, id],
     (err, rows) => {
       if (err) {
         console.log(err);
@@ -72,7 +74,8 @@ blogsRouter.put("/:id", authenticateSession, (req, res) => {
       }
       // Fetch updated record to return a response to client
       global.db.all(
-        `SELECT id, title, subtitle, state FROM blogs WHERE blogs.id=${id};`,
+        "SELECT id, title, subtitle, state FROM blogs WHERE blogs.id=?;",
+        [id],
         (err, rows) => {
           if (err) {
             console.log(err);
@@ -87,24 +90,29 @@ blogsRouter.put("/:id", authenticateSession, (req, res) => {
 
 blogsRouter.put("/likes/:id", (req, res) => {
   const id = req.params.id;
-  global.db.all(`SELECT likes FROM blogs WHERE blogs.id=${id}`, (err, rows) => {
-    if (err) {
-      console.log(err);
-      return res.status(400).end();
-    }
-    const likes = rows[0].likes;
+  global.db.all(
+    "SELECT likes FROM blogs WHERE blogs.id=?",
+    [id],
+    (err, rows) => {
+      if (err) {
+        console.log(err);
+        return res.status(400).end();
+      }
+      const likes = rows[0].likes;
 
-    global.db.all(
-      `UPDATE blogs SET likes=${likes + 1} WHERE blogs.id=${id}`,
-      (err, rows) => {
-        if (err) {
-          console.log(err);
-          return res.status(400).end();
-        }
-        res.json({ likes: likes + 1 });
-      },
-    );
-  });
+      global.db.all(
+        "UPDATE blogs SET likes=? WHERE blogs.id=?",
+        [likes + 1, id],
+        (err, rows) => {
+          if (err) {
+            console.log(err);
+            return res.status(400).end();
+          }
+          res.json({ likes: likes + 1 });
+        },
+      );
+    },
+  );
 });
 
 blogsRouter.delete("/:id", authenticateSession, (req, res) => {
@@ -112,21 +120,25 @@ blogsRouter.delete("/:id", authenticateSession, (req, res) => {
   const user = req.user;
 
   // Delete all comments related to the blog being deleted
-  global.db.all(`DELETE FROM comments WHERE parent_blog=${id}`, (err, rows) => {
-    if (err) {
-      console.log(err);
-      return res.status(400).end();
-    }
-
-    // Delete the blog itself
-    global.db.all(`DELETE FROM blogs WHERE blogs.id=${id}`, (err, rows) => {
+  global.db.all(
+    "DELETE FROM comments WHERE parent_blog=?",
+    [id],
+    (err, rows) => {
       if (err) {
         console.log(err);
         return res.status(400).end();
       }
-      res.status(204).end();
-    });
-  });
+
+      // Delete the blog itself
+      global.db.all("DELETE FROM blogs WHERE blogs.id=?", [id], (err, rows) => {
+        if (err) {
+          console.log(err);
+          return res.status(400).end();
+        }
+        res.status(204).end();
+      });
+    },
+  );
 });
 
 module.exports = blogsRouter;
